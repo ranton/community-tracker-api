@@ -1,4 +1,4 @@
-package books
+package community
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -14,6 +14,8 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 		DB: db,
 	}
 
-	routes := app.Group("/cities")
-	routes.Get("/", h.GetCities)
+	routes := app.Group("/community")
+	routes.Get("/job-level", h.GetJobLevel)
+	routes.Get("/", h.GetCommunity)
+	routes.Get("/cities", h.GetCities)
 }

@@ -1,4 +1,4 @@
-package community
+package cities
 
 import (
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"

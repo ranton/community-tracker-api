@@ -1,4 +1,4 @@
-package community
+package cities
 
 import (
 	"fmt"

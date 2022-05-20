@@ -31,7 +31,7 @@ func (h handler) UpdateCity(c *fiber.Ctx) error {
 		city.Name = body.Name
 		h.DB.Save(&city)
 		fmt.Println(result)
-		return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Updated data!", "data": &city})
+		return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Updated data!", "data": &city})
 	}
 
 }

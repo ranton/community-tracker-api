@@ -21,5 +21,5 @@ func (h handler) DeleteCity(c *fiber.Ctx) error {
 	// delete city from db
 	h.DB.Delete(&city)
 
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Deleted", "data": &city})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success Deleted!", "data": &city})
 }

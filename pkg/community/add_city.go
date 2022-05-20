@@ -25,5 +25,5 @@ func (h handler) AddCity(c *fiber.Ctx) error {
 	if result := h.DB.Create(&city); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "message": "Success!", "data": &city})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success! Added Data!", "data": &city})
 }

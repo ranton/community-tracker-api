@@ -12,5 +12,5 @@ func (h handler) GetCities(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
 
-	return c.Status(fiber.StatusOK).JSON(&cities)
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success!", "data": &cities})
 }

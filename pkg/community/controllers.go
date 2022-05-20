@@ -14,11 +14,13 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 		DB: db,
 	}
 
-	routes := app.Group("/community")
-	routes.Delete("/:id", h.DeleteCity)
-	routes.Put("/:id", h.UpdateCity)
-	routes.Get("/job-level", h.GetJobLevel)
-	routes.Get("/", h.GetCommunity)
-	routes.Get("/cities", h.GetCities)
-	routes.Post("/cities", h.AddCity)
+	communityRoutes := app.Group("/api/community")
+	communityRoutes.Get("/job-level", h.GetJobLevel)
+	communityRoutes.Get("/", h.GetCommunity)
+
+	citiesRoutes := app.Group("/api/cities")
+	citiesRoutes.Get("/", h.GetCities)
+	citiesRoutes.Post("/", h.AddCity)
+	citiesRoutes.Delete("/:id", h.DeleteCity)
+	citiesRoutes.Put("/:id", h.UpdateCity)
 }

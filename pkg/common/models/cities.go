@@ -1,5 +1,6 @@
 package models
 
 type Cities struct {
-	Name string `json:"city_name"`
+	Name string `json:"name"`
+	ID   string `json:"id"`
 }

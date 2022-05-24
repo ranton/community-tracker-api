@@ -47,7 +47,7 @@ CREATE TABLE public.peopleskills (
 -- DROP TABLE public.project;
 
 CREATE TABLE public.project (
-	projectid int4 NOT NULL,
+	projectid int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	projectdesc varchar(100) NOT NULL,
 	isactive bool NOT NULL,
 	CONSTRAINT project_pkey PRIMARY KEY (projectid)
@@ -61,10 +61,27 @@ CREATE TABLE public.project (
 -- DROP TABLE public.workstate;
 
 CREATE TABLE public.workstate (
-	workstateid int4 NOT NULL,
+	workstateid int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	workstatedescription varchar(100) NOT NULL,
 	isactive bool NOT NULL,
 	CONSTRAINT workstate_pkey PRIMARY KEY (workstateid)
+);
+
+
+-- public.community definition
+
+-- Drop table
+
+-- DROP TABLE public.community;
+
+CREATE TABLE public.community (
+	communityid int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	communityname varchar(50) NOT NULL,
+	image bytea NULL,
+	colortheme varchar(30) NULL,
+	isactive bool NOT NULL,
+	communitymgrid int4 NULL,
+	CONSTRAINT community_pkey PRIMARY KEY (communityid)
 );
 
 
@@ -83,14 +100,12 @@ CREATE TABLE public.people (
 	fullname varchar(130) NOT NULL,
 	csvemail varchar(50) NOT NULL,
 	hireddate date NOT NULL,
+	communityid int4 NULL,
 	workstateid int4 NULL,
 	joblevelid int4 NULL,
 	projectid int4 NULL,
 	isactive bool NOT NULL,
-	CONSTRAINT people_pkey PRIMARY KEY (peopleid),
-	CONSTRAINT joblevel_fkey FOREIGN KEY (joblevelid) REFERENCES public.joblevel(joblevelid),
-	CONSTRAINT project_fkey FOREIGN KEY (projectid) REFERENCES public.project(projectid),
-	CONSTRAINT workstate_fkey FOREIGN KEY (workstateid) REFERENCES public.workstate(workstateid)
+	CONSTRAINT people_pkey PRIMARY KEY (peopleid)
 );
 
 
@@ -104,10 +119,8 @@ CREATE TABLE public.peopledetails (
 	peopledetailsid int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	peopleid int4 NOT NULL,
 	peopledetailsdescid int4 NOT NULL,
-	isactive bool NOT NULL,
-	CONSTRAINT peopledetails_pkey PRIMARY KEY (peopledetailsid),
-	CONSTRAINT peopleid_fkey FOREIGN KEY (peopleid) REFERENCES public.people(peopleid),
-	CONSTRAINT peopleotherdetailsid_fkey FOREIGN KEY (peopledetailsdescid) REFERENCES public.peopledetailsdesc(peopledetailsdescid)
+	activeflag bool NOT NULL,
+	CONSTRAINT peopledetails_pkey PRIMARY KEY (peopledetailsid)
 );
 
 
@@ -122,9 +135,7 @@ CREATE TABLE public.peopleprimaryskills (
 	peopleid int4 NOT NULL,
 	peopleskillsid int4 NOT NULL,
 	isactive bool NOT NULL,
-	CONSTRAINT skillset_pkey PRIMARY KEY (peopleprimaryskillsid),
-	CONSTRAINT peopleid_fkey FOREIGN KEY (peopleid) REFERENCES public.people(peopleid),
-	CONSTRAINT peopleskills_fkey FOREIGN KEY (peopleskillsid) REFERENCES public.peopleskills(peopleskillsid)
+	CONSTRAINT skillset_pkey PRIMARY KEY (peopleprimaryskillsid)
 );
 
 
@@ -139,25 +150,36 @@ CREATE TABLE public.peopletechnicalinterest (
 	peopleid int4 NOT NULL,
 	peopleskillsid int4 NOT NULL,
 	isactive bool NOT NULL,
-	CONSTRAINT peopletechnicalinterest_pkey PRIMARY KEY (peopletechnicalinterestid),
-	CONSTRAINT peopleid_fkey FOREIGN KEY (peopleid) REFERENCES public.people(peopleid),
-	CONSTRAINT peopleskills_fkey FOREIGN KEY (peopleskillsid) REFERENCES public.peopleskills(peopleskillsid)
+	CONSTRAINT peopletechnicalinterest_pkey PRIMARY KEY (peopletechnicalinterestid)
 );
 
 
--- public.community definition
+-- public.community foreign keys
 
--- Drop table
+ALTER TABLE public.community ADD CONSTRAINT community_fk FOREIGN KEY (communitymgrid) REFERENCES public.people(peopleid);
 
--- DROP TABLE public.community;
 
-CREATE TABLE public.community (
-	communityid int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	communityname varchar(50) NOT NULL,
-	communitymgrpeopleid int4 NOT NULL,
-	image bytea NULL,
-	colortheme varchar(30) NULL,
-	isactive bool NOT NULL,
-	CONSTRAINT community_pkey PRIMARY KEY (communityid),
-	CONSTRAINT peopleid_fkey FOREIGN KEY (communitymgrpeopleid) REFERENCES public.people(peopleid)
-);
+-- public.people foreign keys
+
+ALTER TABLE public.people ADD CONSTRAINT community_fkey FOREIGN KEY (communityid) REFERENCES public.community(communityid);
+ALTER TABLE public.people ADD CONSTRAINT joblevel_fkey FOREIGN KEY (joblevelid) REFERENCES public.joblevel(joblevelid);
+ALTER TABLE public.people ADD CONSTRAINT project_fkey FOREIGN KEY (projectid) REFERENCES public.project(projectid);
+ALTER TABLE public.people ADD CONSTRAINT workstate_fkey FOREIGN KEY (workstateid) REFERENCES public.workstate(workstateid);
+
+
+-- public.peopledetails foreign keys
+
+ALTER TABLE public.peopledetails ADD CONSTRAINT peopleid_fkey FOREIGN KEY (peopleid) REFERENCES public.people(peopleid);
+ALTER TABLE public.peopledetails ADD CONSTRAINT peopleotherdetailsid_fkey FOREIGN KEY (peopledetailsdescid) REFERENCES public.peopledetailsdesc(peopledetailsdescid);
+
+
+-- public.peopleprimaryskills foreign keys
+
+ALTER TABLE public.peopleprimaryskills ADD CONSTRAINT peopleid_fkey FOREIGN KEY (peopleid) REFERENCES public.people(peopleid);
+ALTER TABLE public.peopleprimaryskills ADD CONSTRAINT peopleskills_fkey FOREIGN KEY (peopleskillsid) REFERENCES public.peopleskills(peopleskillsid);
+
+
+-- public.peopletechnicalinterest foreign keys
+
+ALTER TABLE public.peopletechnicalinterest ADD CONSTRAINT peopleid_fkey FOREIGN KEY (peopleid) REFERENCES public.people(peopleid);
+ALTER TABLE public.peopletechnicalinterest ADD CONSTRAINT peopleskills_fkey FOREIGN KEY (peopleskillsid) REFERENCES public.peopleskills(peopleskillsid);

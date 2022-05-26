@@ -8,8 +8,8 @@ import (
 )
 
 type UpdateCityRequestBody struct {
-	Name    string `json:"name"`
-	City_id int    `json:"city_id"`
+	Name string `json:"name"`
+	//City_id int    `json:"city_id"`
 }
 
 func (h handler) UpdateCity(c *fiber.Ctx) error {

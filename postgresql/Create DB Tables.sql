@@ -8,9 +8,10 @@ CREATE TABLE public.community (
 	communityid int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	communityname varchar(50) NOT NULL,
 	image bytea NULL,
-	colortheme varchar(30) NULL,
-	isactive bool NOT NULL,
+--	colortheme varchar(30) NULL,
+--	isactive bool NOT NULL,
 	communitymgrid int4 NULL,
+	communitydesc varchar(250) NULL, 
 	CONSTRAINT community_pkey PRIMARY KEY (communityid)
 );
 

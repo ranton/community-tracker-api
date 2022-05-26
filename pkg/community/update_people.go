@@ -43,7 +43,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	var people models.UpdatePeople
+	var people models.Update_People
 
 	people.Cognizantid = body.Cognizantid
 	people.Lastname = body.Lastname

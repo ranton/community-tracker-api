@@ -4,14 +4,14 @@ import (
 	"github.com/VncntDzn/community-tracker-api/pkg/cities"
 	"github.com/VncntDzn/community-tracker-api/pkg/common/db"
 	"github.com/VncntDzn/community-tracker-api/pkg/community"
-
-	//"github.com/VncntDzn/community-tracker-api/pkg/people"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
 	app := fiber.New()
 	myDB := db.Init()
+	app.Use(cors.New())
 
 	community.RegisterRoutes(app, myDB)
 	cities.RegisterRoutes(app, myDB)

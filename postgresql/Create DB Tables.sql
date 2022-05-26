@@ -11,6 +11,7 @@ CREATE TABLE public.community (
 --	colortheme varchar(30) NULL,
 --	isactive bool NOT NULL,
 	communitymgrid int4 NULL,
+	communitydesc varchar(250) NULL, 
 	CONSTRAINT community_pkey PRIMARY KEY (communityid)
 );
 

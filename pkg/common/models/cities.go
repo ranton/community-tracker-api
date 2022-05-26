@@ -2,8 +2,7 @@ package models
 
 type Cities struct {
 	Name string `json:"name"`
-	//City_id int    `json:"city_id" primaryKey;autoIncrement:true`
-	City_id int `gorm:"column:city_id" json:"city_id"`
+	ID   int    `json:"id"`
 }
 
 type AddCity struct {

@@ -17,5 +17,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	citiesRoutes.Get("/", h.GetCities)
 	citiesRoutes.Post("/", h.AddCity)
 	citiesRoutes.Delete("/:id", h.DeleteCity)
-	citiesRoutes.Put("/:id", h.UpdateCity)
+	citiesRoutes.Put("/:city_id", h.UpdateCity)
 }

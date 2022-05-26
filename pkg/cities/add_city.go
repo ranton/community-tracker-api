@@ -10,14 +10,16 @@ type AddCityRequestBody struct {
 }
 
 func (h handler) AddCity(c *fiber.Ctx) error {
-	body := AddCityRequestBody{}
+	body := AddCityRequestBody{
+		Name: "",
+	}
 
 	// parse body, attach to AddCityRequestBody struct
 	if err := c.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	var city models.Cities
+	var city models.AddCity
 
 	city.Name = body.Name
 

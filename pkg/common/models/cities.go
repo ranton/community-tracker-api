@@ -2,7 +2,7 @@ package models
 
 type Cities struct {
 	Name string `json:"name"`
-	ID   int    `json:"id" primaryKey;autoIncrement:true`
+	ID   int    `json:"id"`
 }
 
 type AddCity struct {

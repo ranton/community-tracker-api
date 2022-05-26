@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/VncntDzn/community-tracker-api/pkg/cities"
+
 	"github.com/VncntDzn/community-tracker-api/pkg/common/db"
 	"github.com/VncntDzn/community-tracker-api/pkg/community"
 	"github.com/VncntDzn/community-tracker-api/pkg/community_managers"

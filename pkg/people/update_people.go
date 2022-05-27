@@ -2,6 +2,7 @@ package people
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
@@ -38,12 +39,14 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		Isactive:    false,
 	}
 
+	trim_id := strings.TrimLeft(id, "peopleid=")
+
 	// parse body, attach to UpdateCityRequestBody struct
 	if err := c.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	var people models.UpdatePeople
+	var people models.Update_People
 
 	people.Cognizantid = body.Cognizantid
 	people.Lastname = body.Lastname
@@ -74,6 +77,21 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		people.Joblevelid = body.Joblevelid
 		people.Projectid = body.Projectid
 		people.Isactive = body.Isactive
+
+		mp := make(map[string]interface{})
+		mp["cognizantid"] = body.Cognizantid
+		mp["lastname"] = body.Lastname
+		mp["firstname"] = body.Firstname
+		mp["middlename"] = body.Middlename
+		mp["fullname"] = body.Fullname
+		mp["csvemail"] = body.Csvemail
+		mp["hireddate"] = body.Hireddate
+		mp["workstateid"] = body.Workstateid
+		mp["joblevelid"] = body.Joblevelid
+		mp["projectid"] = body.Projectid
+		mp["isactive"] = body.Isactive
+
+		h.DB.Model(people).Where("peopleid = ?", trim_id).Updates(mp)
 
 		h.DB.Save(&people)
 		fmt.Println(result)

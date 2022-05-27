@@ -14,7 +14,6 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 		DB: db,
 	}
 	communityRoutes := app.Group("/api/community")
-	communityRoutes.Get("/", h.GetPeople)
-	communityRoutes.Post("/", h.AddPeople)
-	communityRoutes.Put("/:peopleid", h.UpdatePeople)
+	communityRoutes.Get("/job-level", h.GetJobLevel)
+	communityRoutes.Get("/", h.GetCommunity)
 }

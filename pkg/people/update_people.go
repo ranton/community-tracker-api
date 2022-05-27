@@ -1,11 +1,15 @@
-package community
+package people
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
 )
 
-type AddPeopleRequestBody struct {
+type UpdatePeopleRequestBody struct {
+	//Peopleid    int    `gorm:"column:peopleid" json:"people_id"`
 	Cognizantid int    `gorm:"column:cognizantid" json:"cognizantid_id"`
 	Lastname    string `gorm:"column:lastname" json:"last_name"`
 	Firstname   string `gorm:"column:firstname" json:"first_name"`
@@ -19,8 +23,9 @@ type AddPeopleRequestBody struct {
 	Isactive    bool   `gorm:"column:isactive" json:"is_active"`
 }
 
-func (h handler) AddPeople(c *fiber.Ctx) error {
-	body := AddPeopleRequestBody{
+func (h handler) UpdatePeople(c *fiber.Ctx) error {
+	id := c.Params("peopleid")
+	body := UpdatePeopleRequestBody{
 		Cognizantid: 0,
 		Lastname:    "",
 		Firstname:   "",
@@ -31,15 +36,17 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 		Workstateid: 0,
 		Joblevelid:  0,
 		Projectid:   0,
-		Isactive:    true,
+		Isactive:    false,
 	}
 
-	// parse body, attach to AddPeopleRequestBody struct
+	trim_id := strings.TrimLeft(id, "peopleid=")
+
+	// parse body, attach to UpdateCityRequestBody struct
 	if err := c.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	var people models.Add_People
+	var people models.Update_People
 
 	people.Cognizantid = body.Cognizantid
 	people.Lastname = body.Lastname
@@ -53,9 +60,42 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 	people.Projectid = body.Projectid
 	people.Isactive = body.Isactive
 
-	// insert new db entry
-	if result := h.DB.Create(&people); result.Error != nil {
+	if result := h.DB.First(&people, id); result.Error != nil {
+
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
+
+	} else {
+
+		people.Cognizantid = body.Cognizantid
+		people.Lastname = body.Lastname
+		people.Firstname = body.Firstname
+		people.Middlename = body.Middlename
+		people.Fullname = body.Fullname
+		people.Hireddate = body.Hireddate
+		people.Csvemail = body.Csvemail
+		people.Workstateid = body.Workstateid
+		people.Joblevelid = body.Joblevelid
+		people.Projectid = body.Projectid
+		people.Isactive = body.Isactive
+
+		mp := make(map[string]interface{})
+		mp["cognizantid"] = body.Cognizantid
+		mp["lastname"] = body.Lastname
+		mp["firstname"] = body.Firstname
+		mp["middlename"] = body.Middlename
+		mp["fullname"] = body.Fullname
+		mp["csvemail"] = body.Csvemail
+		mp["hireddate"] = body.Hireddate
+		mp["workstateid"] = body.Workstateid
+		mp["joblevelid"] = body.Joblevelid
+		mp["projectid"] = body.Projectid
+		mp["isactive"] = body.Isactive
+
+		h.DB.Model(people).Where("peopleid = ?", trim_id).Updates(mp)
+
+		h.DB.Save(&people)
+		fmt.Println(result)
+		return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Updated data!", "data": &people})
 	}
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success! Added Data!", "data": &people})
+
 }

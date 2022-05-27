@@ -1,4 +1,4 @@
-package community
+package people
 
 import (
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"

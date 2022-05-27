@@ -39,7 +39,7 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	var people models.AddPeople
+	var people models.Add_People
 
 	people.Cognizantid = body.Cognizantid
 	people.Lastname = body.Lastname

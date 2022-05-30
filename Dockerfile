@@ -4,8 +4,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-RUN go build -o main ./cmd 
-
+RUN go build -o community-tracker-api ./cmd/main.go
 EXPOSE 8000
 
-CMD go run cmd/main.go
+CMD ["./community-tracker-api"]

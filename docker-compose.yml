@@ -4,11 +4,10 @@ services:
   app:
     container_name: go-dev
     image: go-dev
+    restart: unless-stopped
     build: 
       context: .
       target: development
-    volumes:
-      - .:/app 
     ports:
       - 8000:8000
     environment:

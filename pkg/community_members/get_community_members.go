@@ -2,7 +2,6 @@ package community_members
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
@@ -17,7 +16,6 @@ func (h handler) GetCommunityMembers(c *fiber.Ctx) error {
 
 	// show 404 error if no community found
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		fmt.Print(result.Error)
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": fiber.StatusNotFound, "message": "Community does not exist."})
 	}
 

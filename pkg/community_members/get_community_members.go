@@ -10,7 +10,7 @@ import (
 
 func (h handler) GetCommunityMembers(c *fiber.Ctx) error {
 	var community_data models.CommunityMembers
-	communityId := c.Params("community")
+	communityId := c.Params("communityId")
 
 	result := h.DB.Where(&models.CommunityMembers{CommunityID: communityId}).Preload("Members").First(&community_data)
 

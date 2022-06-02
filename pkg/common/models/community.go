@@ -13,3 +13,13 @@ type Community struct {
 func (Community) TableName() string {
 	return "community"
 }
+
+type CommunityMembers struct {
+	CommunityID   string   `gorm:"column:communityid" json:"community_id"`
+	CommunityName string   `gorm:"column:communityname" json:"community_name"`
+	Members       []People `gorm:"foreignKey:CommunityID;references:CommunityID" json:"members"`
+}
+
+func (CommunityMembers) TableName() string {
+	return "community"
+}

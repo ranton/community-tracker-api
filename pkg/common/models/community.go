@@ -23,3 +23,14 @@ type CommunityMembers struct {
 func (CommunityMembers) TableName() string {
 	return "community"
 }
+
+type CreateCommunity struct {
+	CommunityID      int    `gorm:"primaryKey;column:communityid" json:"community_id"`
+	CommunityName    string `gorm:"column:communityname" json:"community_name"`
+	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
+	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
+}
+
+func (CreateCommunity) TableName() string {
+	return "community"
+}

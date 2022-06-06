@@ -9,3 +9,11 @@ type Peopleskills struct {
 func (Peopleskills) TableName() string {
 	return "peopleskills"
 }
+
+type Deleteskills struct {
+	IsActive bool `gorm:"column:isactive" json:"is_active"`
+}
+
+func (Deleteskills) TableName() string {
+	return "peopleskills"
+}

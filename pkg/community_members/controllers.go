@@ -16,4 +16,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 
 	communityMembersRoute := app.Group("/api/community-members")
 	communityMembersRoute.Get("/:communityId", h.GetCommunityMembers)
+	communityMembersRoute.Put("/:people_id", h.SoftDeleteMember)
 }

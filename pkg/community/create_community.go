@@ -1,8 +1,6 @@
 package community
 
 import (
-	"fmt"
-
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	requests "github.com/VncntDzn/community-tracker-api/pkg/community/requests"
 	communityValidation "github.com/VncntDzn/community-tracker-api/pkg/validations/community"
@@ -28,7 +26,6 @@ func (h handler) CreateCommunity(c *fiber.Ctx) error {
 
 	communityModel := h.DB.Create(&community)
 	if communityModel.Error != nil {
-		fmt.Println(&communityModel)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": fiber.StatusInternalServerError, "message": communityModel.Error.Error()})
 	}
 

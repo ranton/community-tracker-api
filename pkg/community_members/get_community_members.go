@@ -12,7 +12,7 @@ func (h handler) GetCommunityMembers(c *fiber.Ctx) error {
 	var community_data models.CommunityMembers
 	communityId := c.Params("communityId")
 
-	result := h.DB.Where(&models.CommunityMembers{CommunityID: communityId}).Preload("Members").First(&community_data)
+	result := h.DB.Where(&models.CommunityMembers{CommunityID: communityId}).Preload("Members").Preload("Manager").First(&community_data)
 
 	// show 404 error if no community found
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {

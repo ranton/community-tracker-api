@@ -15,9 +15,11 @@ func (Community) TableName() string {
 }
 
 type CommunityMembers struct {
-	CommunityID   string   `gorm:"column:communityid" json:"community_id"`
-	CommunityName string   `gorm:"column:communityname" json:"community_name"`
-	Members       []People `gorm:"foreignKey:CommunityID;references:CommunityID" json:"members"`
+	CommunityID              string   `gorm:"column:communityid" json:"community_id"`
+	CommunityName            string   `gorm:"column:communityname" json:"community_name"`
+	CommunityManagerPeopleID string   `gorm:"column:communitymgrid" json:"-"`
+	Members                  []People `gorm:"foreignKey:Communityid;references:CommunityID" json:"members"`
+	Manager                  People   `gorm:"foreignKey:Peopleid;references:CommunityManagerPeopleID" json:"manager"`
 }
 
 func (CommunityMembers) TableName() string {

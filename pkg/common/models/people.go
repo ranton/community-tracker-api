@@ -60,3 +60,9 @@ type Update_People struct {
 func (Update_People) TableName() string {
 	return "people"
 }
+
+type Manager struct {
+	Cognizantid int    `gorm:"column:cognizantid" json:"cognizantid_id"`
+	Fullname    string `gorm:"column:fullname" json:"full_name"`
+	Csvemail    string `gorm:"column:csvemail" json:"csv_email"`
+}

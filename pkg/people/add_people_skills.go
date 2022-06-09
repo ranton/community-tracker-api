@@ -27,7 +27,7 @@ func (h handler) AddPeopleSkills(c *fiber.Ctx) error {
 	peopleskills.Peopleskillsdesc = body.Peopleskillsdesc
 	peopleskills.IsActive = body.IsActive
 
-	// insert new db entry
+	// insert new records
 	if result := h.DB.Create(&peopleskills); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}

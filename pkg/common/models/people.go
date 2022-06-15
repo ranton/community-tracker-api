@@ -66,3 +66,18 @@ type Manager struct {
 	Fullname    string `gorm:"column:fullname" json:"full_name"`
 	Csvemail    string `gorm:"column:csvemail" json:"csv_email"`
 }
+
+type PeopleWithSkills struct {
+	Peopleid       int        `json:"people_id"`
+	Cognizantid    int        `json:"cognizantid_id"`
+	Fullname       string     `json:"full_name"`
+	Csvemail       string     `json:"csv_email"`
+	Hireddate      string     `json:"hired_date"`
+	Communityid    int        `json:"community_id"`
+	Workstateid    int        `json:"workstate_id"`
+	Joblevelid     int        `json:"joblevel_id"`
+	Projectid      int        `json:"project_id"`
+	Isactive       bool       `json:"is_active"`
+	Isprobationary bool       `json:"is_probationary"`
+	Skill          []SkillSet `json:"skills"`
+}

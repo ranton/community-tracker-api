@@ -1,0 +1,10 @@
+package models
+
+type PeoplePrimarySkills struct {
+	PeopleId    int `gorm:"column:peopleid" json:"-"`
+	PeopleSkill int `gorm:"column:peopleskillsid" json:"skill_id"`
+}
+
+func (PeoplePrimarySkills) TableName() string {
+	return "peopleprimaryskills"
+}

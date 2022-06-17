@@ -1,7 +1,6 @@
 package people
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
@@ -104,7 +103,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		h.DB.Model(people).Where("peopleid = ?", trim_id).Updates(mp)
 
 		h.DB.Save(&people)
-		fmt.Println(result)
+
 		return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Updated data!", "data": &people})
 	}
 

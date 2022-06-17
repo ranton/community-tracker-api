@@ -1,13 +1,12 @@
 package models
 
 type Community struct {
-	CommunityID              string `gorm:"column:communityid" json:"community_id"`
-	CommunityName            string `gorm:"column:communityname" json:"community_name"`
-	CommunityManagerPeopleID string `gorm:"column:communitymgrid" json:"community_manager_people_id"`
-	Image                    string `gorm:"column:image" json:"image"`
-	ColorTheme               string `gorm:"column:colortheme" json:"color_theme"`
-	IsActive                 bool   `gorm:"column:isactive" json:"is_active"`
-	Manager                  People `gorm:"foreignKey:PeopleID;references:CommunityManagerPeopleID" json:"manager_info"`
+	CommunityID    int    `gorm:"column:communityid" json:"community_id"`
+	CommunityName  string `gorm:"column:communityname" json:"community_name"`
+	CommunityDesc  string `gorm:"column:communitydesc" json:"community_description"`
+	CommunityMgrID string `gorm:"column:communitymgrid" json:"community_manager"`
+	Icon           string `gorm:"column:icon" json:"icon"`
+	//	Manager                  People `gorm:"foreignKey:PeopleID;references:CommunityManagerPeopleID" json:"manager_info"`
 }
 
 func (Community) TableName() string {
@@ -31,8 +30,21 @@ type CreateCommunity struct {
 	CommunityName    string `gorm:"column:communityname" json:"community_name"`
 	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
 	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
+	Icon             string `gorm:"column:icon" json:"icon"`
 }
 
 func (CreateCommunity) TableName() string {
+	return "community"
+}
+
+type UpdateCommunity struct {
+	CommunityID      int    `gorm:"primaryKey;column:communityid" json:"community_id"`
+	CommunityName    string `gorm:"column:communityname" json:"community_name"`
+	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
+	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
+	Icon             string `gorm:"column:icon" json:"icon"`
+}
+
+func (UpdateCommunity) TableName() string {
 	return "community"
 }

@@ -22,6 +22,7 @@ func (People) TableName() string {
 }
 
 type Add_People struct {
+	PeopleId       int    `gorm:"primaryKey;column:peopleid" json:"people_id"`
 	Cognizantid    int    `gorm:"column:cognizantid" json:"cognizantid_id"`
 	Lastname       string `gorm:"column:lastname" json:"last_name"`
 	Firstname      string `gorm:"column:firstname" json:"first_name"`

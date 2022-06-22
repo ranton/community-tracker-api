@@ -1,8 +1,12 @@
 package people
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type AddPeopleRequestBody struct {
@@ -19,6 +23,7 @@ type AddPeopleRequestBody struct {
 	Projectid      int    `gorm:"column:projectid" json:"project_id"`
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
+	Skills         string `json:"skills"`
 }
 
 func (h handler) AddPeople(c *fiber.Ctx) error {
@@ -59,9 +64,37 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 	people.Isactive = body.Isactive
 	people.Isprobationary = body.Isprobationary
 
-	// insert new db entry
-	if result := h.DB.Create(&people); result.Error != nil {
-		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
+	// create transaction for insert
+	transactionErr := h.DB.Transaction(func(tx *gorm.DB) error {
+		//insert people
+		if createPeopleErr := tx.Create(&people).Error; createPeopleErr != nil {
+			return createPeopleErr
+		}
+
+		skillSet := strings.Split(body.Skills, ",")
+		var batchSkills []*models.InsertPrimarySkill
+		for _, skillId := range skillSet {
+			parsedSkill, _ := strconv.Atoi(skillId)
+			var skillItem models.InsertPrimarySkill
+			skillItem.PeopleId = people.PeopleId
+			skillItem.PeopleSkill = parsedSkill
+			skillItem.IsActive = true
+			batchSkills = append(batchSkills, &skillItem)
+		}
+
+		//insert skills
+		if len(batchSkills) > 0 {
+			if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {
+				// return any error will rollback
+				return insertSkillErr
+			}
+		}
+		return nil
+	})
+
+	if transactionErr != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": fiber.StatusInternalServerError, "message": transactionErr.Error()})
 	}
+
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success! Added Data!", "data": &people})
 }

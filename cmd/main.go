@@ -4,6 +4,7 @@ import (
 	"github.com/VncntDzn/community-tracker-api/pkg/cities"
 	"github.com/VncntDzn/community-tracker-api/pkg/member_skills"
 	"github.com/VncntDzn/community-tracker-api/pkg/people"
+	"github.com/VncntDzn/community-tracker-api/pkg/projects"
 
 	"github.com/VncntDzn/community-tracker-api/pkg/common/db"
 	"github.com/VncntDzn/community-tracker-api/pkg/community"
@@ -23,6 +24,7 @@ func main() {
 	community_managers.RegisterRoutes(app, myDB)
 	people.RegisterRoutes(app, myDB)
 	community_members.RegisterRoutes(app, myDB)
+	projects.RegisterRoutes(app, myDB)
 	member_skills.RegisterRoutes(app, myDB)
 
 	app.Get("/", func(ctx *fiber.Ctx) error {

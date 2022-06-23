@@ -35,3 +35,13 @@ type SkillSet struct {
 func (SkillSet) TableName() string {
 	return "peopleskills"
 }
+
+type Hard_Delete_Skills struct {
+	Peopleskillsid   int    `gorm:"column:peopleskillsid" json:"id"`
+	Peopleskillsdesc string `gorm:"column:peopleskillsdesc" json:"description"`
+	IsActive         bool   `gorm:"column:isactive" json:"is_active"`
+}
+
+func (Hard_Delete_Skills) TableName() string {
+	return "peopleskills"
+}

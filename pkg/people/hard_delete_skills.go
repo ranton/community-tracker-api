@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (h handler) DeleteCity(c *fiber.Ctx) error {
+func (h handler) DeleteSkills(c *fiber.Ctx) error {
 	id := c.Params("peopleskillsid")
 
 	var peopleskills models.Hard_Delete_Skills

@@ -1,6 +1,7 @@
 package people
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -106,16 +107,23 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 
 		skillSet := strings.Split(body.Skills, ",")
 
+		var hasSkills = false
 		var batchSkills []*models.InsertPrimarySkill
 		parsedMemberId, _ := strconv.Atoi(trim_id)
-		for _, skillId := range skillSet {
-			parsedSkill, _ := strconv.Atoi(skillId)
-			var skillItem models.InsertPrimarySkill
-			skillItem.PeopleId = parsedMemberId
-			skillItem.PeopleSkill = parsedSkill
-			skillItem.IsActive = true
-			batchSkills = append(batchSkills, &skillItem)
+		if body.Skills != "" {
+			hasSkills = true
+			for _, skillId := range skillSet {
+				parsedSkill, _ := strconv.Atoi(skillId)
+				var skillItem models.InsertPrimarySkill
+				skillItem.PeopleId = parsedMemberId
+				skillItem.PeopleSkill = parsedSkill
+				skillItem.IsActive = true
+				batchSkills = append(batchSkills, &skillItem)
+			}
 		}
+
+		fmt.Print(batchSkills)
+		fmt.Print(body.Skills)
 
 		transactionErr := h.DB.Transaction(func(tx *gorm.DB) error {
 			//update people
@@ -128,17 +136,18 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 				return delSkillErr
 			}
 			//insert all new skills
-			if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {
-				// return any error will rollback
-				return insertSkillErr
+			fmt.Print(hasSkills)
+			if hasSkills {
+				if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {
+					// return any error will rollback
+					return insertSkillErr
+				}
 			}
 			return nil
 		})
 		if transactionErr != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": fiber.StatusInternalServerError, "message": transactionErr.Error()})
 		}
-
-		h.DB.Save(&people)
 
 		return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Updated data!", "data": &people})
 	}

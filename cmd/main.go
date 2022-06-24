@@ -2,11 +2,14 @@ package main
 
 import (
 	"github.com/VncntDzn/community-tracker-api/pkg/cities"
+	"github.com/VncntDzn/community-tracker-api/pkg/member_skills"
 	"github.com/VncntDzn/community-tracker-api/pkg/people"
+	"github.com/VncntDzn/community-tracker-api/pkg/projects"
 
 	"github.com/VncntDzn/community-tracker-api/pkg/common/db"
 	"github.com/VncntDzn/community-tracker-api/pkg/community"
 	"github.com/VncntDzn/community-tracker-api/pkg/community_managers"
+	"github.com/VncntDzn/community-tracker-api/pkg/community_members"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
@@ -20,6 +23,9 @@ func main() {
 	cities.RegisterRoutes(app, myDB)
 	community_managers.RegisterRoutes(app, myDB)
 	people.RegisterRoutes(app, myDB)
+	community_members.RegisterRoutes(app, myDB)
+	projects.RegisterRoutes(app, myDB)
+	member_skills.RegisterRoutes(app, myDB)
 
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusOK).SendString(":8000")

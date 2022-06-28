@@ -24,8 +24,9 @@ CREATE TABLE community (
 CREATE TABLE communityadminandmanager (
 	communityadminandmanagerid int NOT NULL GENERATED ALWAYS AS IDENTITY,
 	communityadminandmanagername varchar(100) NOT NULL,
+	cognizantid varchar(10) NOT NULL,
 	csvemail varchar(50) NOT NULL,
-	passkey varchar(15) NULL,
+	password varchar(100) NOT NULL,
 	roletype varchar(10) NOT NULL,
 	isactive bool NOT NULL,
 	CONSTRAINT communityadminandmanager_pkey PRIMARY KEY (communityadminandmanagerid)

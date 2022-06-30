@@ -10,8 +10,11 @@ import (
 
 func AuthMiddleware(ctx *fiber.Ctx) error {
 	authHeader := ctx.Get("Authorization")
-	authFields := strings.Fields(authHeader)
+	if authHeader == "" {
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": fiber.StatusUnauthorized, "message": "Unathorized Request."})
+	}
 
+	authFields := strings.Fields(authHeader)
 	if authFields[0] != "Bearer" {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": fiber.StatusUnauthorized, "message": "Unathorized Request."})
 	}

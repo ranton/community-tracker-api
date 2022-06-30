@@ -44,7 +44,7 @@ func (h handler) Login(ctx *fiber.Ctx) error {
 		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 	})
 
-	token, tokenErr := claims.SignedString([]byte(config.GetEnv("JWT_KEY"))) // secret key stored in .env
+	token, tokenErr := claims.SignedString([]byte(config.GetEnv("JWT_SECRET"))) // secret key stored in .env
 	if tokenErr != nil {
 		log.Println(tokenErr.Error())
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": fiber.StatusInternalServerError, "message": "Unable to login"})

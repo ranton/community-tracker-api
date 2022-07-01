@@ -27,6 +27,15 @@ func (Deleteskills) TableName() string {
 	return "peopleskills"
 }
 
+type Update_People_Skills struct {
+	Peopleskillsdesc string `gorm:"column:peopleskillsdesc" json:"peopleskills_desc"`
+	IsActive         bool   `gorm:"column:isactive" json:"is_active"`
+}
+
+func (Update_People_Skills) TableName() string {
+	return "peopleskills"
+}
+
 type SkillSet struct {
 	Peopleskillsid   int    `gorm:"column:peopleskillsid" json:"id"`
 	Peopleskillsdesc string `gorm:"column:peopleskillsdesc" json:"description"`

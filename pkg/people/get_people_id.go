@@ -42,7 +42,7 @@ func (h handler) GetPeopleById(c *fiber.Ctx) error {
 		Fullname:       PeopleId.Fullname,
 		Csvemail:       PeopleId.Csvemail,
 		Hireddate:      PeopleId.Hireddate,
-		Communityid:    PeopleId.Cognizantid,
+		Communityid:    PeopleId.Communityid,
 		Workstateid:    PeopleId.Workstateid,
 		Joblevelid:     PeopleId.Joblevelid,
 		Projectid:      PeopleId.Projectid,

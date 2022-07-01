@@ -24,4 +24,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	peopleskillsRoutes.Get("/", h.GetPeopleSkills)
 	peopleskillsRoutes.Put("/:peopleskillsid", h.DeletePeople)
 	peopleskillsRoutes.Patch("/:peopleskillsid", h.UpdatePeopleSkills)
+	peopleskillsRoutes.Delete("/:peopleskillsid", h.DeleteSkills)
 }

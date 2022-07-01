@@ -1,7 +1,7 @@
 package models
 
 type AdminManager struct {
-	ID          uint   `gorm:"column:communityadminandmanagerid;primaryKey" json:"id"`
+	ID          int    `gorm:"column:communityadminandmanagerid;primaryKey" json:"id"`
 	CognizantID string `gorm:"column:cognizantid" json:"cognizant_id"`
 	AdminName   string `gorm:"column:communityadminandmanagername" json:"name"`
 	Email       string `gorm:"column:csvemail" json:"email"`

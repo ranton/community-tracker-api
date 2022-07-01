@@ -12,6 +12,6 @@ func Make(h string) string {
 }
 
 func Check(value string, hashedValue string) bool {
-	hashed := Make(value)
-	return hashed == hashedValue
+	checkErr := bcrypt.CompareHashAndPassword([]byte(hashedValue), []byte(value))
+	return checkErr == nil
 }

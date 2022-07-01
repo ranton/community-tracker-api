@@ -8,15 +8,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+const UNAUTHORIZED_MESSAGE string = "Unauthorized Request."
+
 func AuthMiddleware(ctx *fiber.Ctx) error {
 	authHeader := ctx.Get("Authorization")
 	if authHeader == "" {
-		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": fiber.StatusUnauthorized, "message": "Unathorized Request."})
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": fiber.StatusUnauthorized, "message": UNAUTHORIZED_MESSAGE})
 	}
 
 	authFields := strings.Fields(authHeader)
 	if authFields[0] != "Bearer" {
-		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": fiber.StatusUnauthorized, "message": "Unathorized Request."})
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": fiber.StatusUnauthorized, "message": UNAUTHORIZED_MESSAGE})
 	}
 
 	token := authFields[1]
@@ -25,7 +27,7 @@ func AuthMiddleware(ctx *fiber.Ctx) error {
 	})
 
 	if tErr != nil {
-		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": fiber.StatusUnauthorized, "message": "Unathorized Request."})
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": fiber.StatusUnauthorized, "message": UNAUTHORIZED_MESSAGE})
 	}
 
 	return ctx.Next()

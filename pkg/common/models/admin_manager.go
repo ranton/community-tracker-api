@@ -13,3 +13,14 @@ type AdminManager struct {
 func (AdminManager) TableName() string {
 	return "communityadminandmanager"
 }
+
+type UpdateAdminManager struct {
+	AdminName string `gorm:"column:communityadminandmanagername" json:"name"`
+	Email     string `gorm:"column:csvemail" json:"email"`
+	RoleType  string `gorm:"column:roletype" json:"-"`
+	IsActive  bool   `gorm:"column:isactive" json:"active"`
+}
+
+func (UpdateAdminManager) TableName() string {
+	return "communityadminandmanager"
+}

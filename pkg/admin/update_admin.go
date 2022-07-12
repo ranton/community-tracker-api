@@ -26,7 +26,7 @@ func (h handler) UpdateAdminDetails(c *fiber.Ctx) error {
 	community.Email = body.CSV_EMAIL
 	community.RoleType = body.ROLE_TYPE
 	community.IsActive = body.IS_ACTIVE
-	if result := h.DB.First(&community, id); result.Error != nil {
+	if result := h.DB.First(&community, "communityadminandmanagerid = ?", id); result.Error != nil {
 
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 
@@ -42,7 +42,7 @@ func (h handler) UpdateAdminDetails(c *fiber.Ctx) error {
 		mp["roletype"] = body.ROLE_TYPE
 		mp["isactive"] = body.IS_ACTIVE
 
-		h.DB.Model(community).Where("communityadminandmanagerid = ?", "communityadminandmanagerid").Updates(mp)
+		h.DB.Model(community).Where("communityadminandmanagerid = ?", id).Updates(mp)
 
 		h.DB.Save(&community)
 

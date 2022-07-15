@@ -1,4 +1,4 @@
-package skills
+package people_skills
 
 type UpdateSkillRequest struct {
 	Peopleskillsdesc string `gorm:"column:peopleskillsdesc" json:"description"`

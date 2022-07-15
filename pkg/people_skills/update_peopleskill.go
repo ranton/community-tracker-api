@@ -1,7 +1,7 @@
-package skills
+package people_skills
 
 import (
-	skillRequest "github.com/VncntDzn/community-tracker-api/pkg/skills/requests"
+	skillRequest "github.com/VncntDzn/community-tracker-api/pkg/people_skills/requests"
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
 )

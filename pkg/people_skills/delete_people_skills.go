@@ -1,4 +1,4 @@
-package people
+package people_skills
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ type DeletePeopleRequestBody struct {
 
 func (h handler) DeletePeople(c *fiber.Ctx) error {
 	id := c.Params("peopleskillsid")
-	body := UpdatePeopleRequestBody{
+	body := DeletePeopleRequestBody{
 		Isactive: false,
 	}
 

@@ -1,4 +1,4 @@
-package people
+package people_skills
 
 import (
 	"strings"

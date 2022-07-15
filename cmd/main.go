@@ -7,6 +7,7 @@ import (
 	"github.com/VncntDzn/community-tracker-api/pkg/member_skills"
 	"github.com/VncntDzn/community-tracker-api/pkg/people"
 	"github.com/VncntDzn/community-tracker-api/pkg/projects"
+	"github.com/VncntDzn/community-tracker-api/pkg/skills"
 
 	"github.com/VncntDzn/community-tracker-api/pkg/common/db"
 	"github.com/VncntDzn/community-tracker-api/pkg/community"
@@ -30,6 +31,7 @@ func main() {
 	member_skills.RegisterRoutes(app, myDB)
 	admin.RegisterRoutes(app, myDB)
 	login.RegisterRoutes(app, myDB)
+	skills.RegisterRoutes(app, myDB)
 
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusOK).SendString(":8000")

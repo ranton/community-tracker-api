@@ -19,5 +19,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	peopleRoutes.Get("/:people_id", h.GetPeopleById)
 	peopleRoutes.Post("/", middleware.AuthMiddleware, h.AddPeople)
 	peopleRoutes.Put("/:peopleid", middleware.AuthMiddleware, h.UpdatePeople)
-	peopleRoutes.Post("/skills", middleware.AuthMiddleware, h.GetPeopleBySkills)
+	peopleRoutes.Post("/skills", h.GetPeopleBySkills)
 }

@@ -1,4 +1,4 @@
-package projects
+package admin
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -13,8 +13,7 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	h := &handler{
 		DB: db,
 	}
-
-	projectRoutes := app.Group("/api/projects")
-	projectRoutes.Post("/", h.CreateProject)
-	projectRoutes.Get("/:projectid", h.GetProject)
+	route := app.Group("/api/admin")
+	route.Post("/", h.CreateAdmin)
+	route.Put("/:communityadminandmanagerid", h.UpdateAdminDetails)
 }

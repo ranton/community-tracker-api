@@ -45,3 +45,12 @@ type Hard_Delete_Skills struct {
 func (Hard_Delete_Skills) TableName() string {
 	return "peopleskills"
 }
+
+type UpdateSkill struct {
+	Peopleskillsdesc string `gorm:"column:peopleskillsdesc" json:"description"`
+	IsActive         bool   `gorm:"column:isactive" json:"is_active"`
+}
+
+func (UpdateSkill) TableName() string {
+	return "peopleskills"
+}

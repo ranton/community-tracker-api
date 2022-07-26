@@ -33,5 +33,6 @@ func (h handler) CreateAdmin(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": fiber.StatusInternalServerError, "message": insertErr.Error()})
 	}
 
+	adminData.Password = ""
 	return ctx.Status(fiber.StatusCreated).JSON(fiber.Map{"success": fiber.StatusCreated, "data": &adminData})
 }

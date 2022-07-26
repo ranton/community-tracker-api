@@ -33,6 +33,19 @@ func (h handler) CreateAdmin(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": fiber.StatusInternalServerError, "message": insertErr.Error()})
 	}
 
-	adminData.Password = ""
-	return ctx.Status(fiber.StatusCreated).JSON(fiber.Map{"success": fiber.StatusCreated, "data": &adminData})
+	adminResponse := struct {
+		AdminName string
+		CognizantID string
+		Email string
+		RoleType string
+		IsActive bool
+	} {
+		AdminName: request.AdminName,
+		CognizantID: request.CognizantId,
+		Email: request.Email,
+		RoleType: "admin",
+		IsActive: true,
+	}
+	
+	return ctx.Status(fiber.StatusCreated).JSON(fiber.Map{"success": fiber.StatusCreated, "data": &adminResponse})
 }

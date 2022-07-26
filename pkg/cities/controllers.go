@@ -2,7 +2,6 @@ package cities
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/VncntDzn/community-tracker-api/pkg/middleware"
 	"gorm.io/gorm"
 )
 
@@ -16,7 +15,7 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	}
 	citiesRoutes := app.Group("/api/cities")
 	citiesRoutes.Get("/", h.GetCities)
-	citiesRoutes.Post("/", middleware.AuthMiddleware, h.AddCity)
-	citiesRoutes.Delete("/:id", middleware.AuthMiddleware, h.DeleteCity)
-	citiesRoutes.Put("/:city_id", middleware.AuthMiddleware, h.UpdateCity)
+	citiesRoutes.Post("/", h.AddCity)
+	citiesRoutes.Delete("/:id", h.DeleteCity)
+	citiesRoutes.Put("/:city_id", h.UpdateCity)
 }

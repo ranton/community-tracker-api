@@ -2,6 +2,7 @@ package projects
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/VncntDzn/community-tracker-api/pkg/middleware"
 	"gorm.io/gorm"
 )
 
@@ -15,6 +16,6 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	}
 
 	projectRoutes := app.Group("/api/projects")
-	projectRoutes.Post("/", h.CreateProject)
+	projectRoutes.Post("/", middleware.AuthMiddleware, h.CreateProject)
 	projectRoutes.Get("/:projectid", h.GetProject)
 }

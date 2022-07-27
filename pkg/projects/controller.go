@@ -17,5 +17,6 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 
 	projectRoutes := app.Group("/api/projects")
 	projectRoutes.Post("/", middleware.AuthMiddleware, h.CreateProject)
+	projectRoutes.Get("/", h.GetProjects)
 	projectRoutes.Get("/:projectid", h.GetProject)
 }

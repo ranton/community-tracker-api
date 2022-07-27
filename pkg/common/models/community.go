@@ -48,3 +48,17 @@ type UpdateCommunity struct {
 func (UpdateCommunity) TableName() string {
 	return "community"
 }
+
+type CommunityWithMembersPercentage struct {
+	CommunityID    int    `gorm:"column:communityid" json:"community_id"`
+	CommunityName  string `gorm:"column:communityname" json:"community_name"`
+	CommunityDesc  string `gorm:"column:communitydesc" json:"community_description"`
+	CommunityIcon          string `gorm:"column:communityicon" json:"icon"`
+	Percentage int `gorm:"column:percentage" json:"percentage"`
+	ManagerFullName string `gorm:"column:fullname" json:"manager_full_name"`
+}
+
+func (CommunityWithMembersPercentage) TableName() string {
+	return "community"
+}
+

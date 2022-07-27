@@ -12,7 +12,7 @@ type UpdateCommunityRequestBody struct {
 	CommunityName    string `gorm:"column:communityname" json:"community_name"`
 	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
 	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
-	Icon             string `gorm:"column:icon" json:"icon"`
+	Icon             string `gorm:"column:communityicon" json:"icon"`
 }
 
 func (h handler) UpdateCommunity(c *fiber.Ctx) error {

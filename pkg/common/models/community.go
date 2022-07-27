@@ -5,7 +5,7 @@ type Community struct {
 	CommunityName  string `gorm:"column:communityname" json:"community_name"`
 	CommunityDesc  string `gorm:"column:communitydesc" json:"community_description"`
 	CommunityMgrID string `gorm:"column:communitymgrid" json:"community_manager"`
-	Icon           string `gorm:"column:icon" json:"icon"`
+	Icon           string `gorm:"column:communityicon" json:"icon"`
 	//	Manager                  People `gorm:"foreignKey:PeopleID;references:CommunityManagerPeopleID" json:"manager_info"`
 }
 
@@ -30,7 +30,8 @@ type CreateCommunity struct {
 	CommunityName    string `gorm:"column:communityname" json:"community_name"`
 	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
 	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
-	Icon             string `gorm:"column:icon" json:"icon"`
+	Icon             string `gorm:"column:communityicon" json:"icon"`
+	IsActive		 bool	`gorm:"column:isactive" json:"is_active"`
 }
 
 func (CreateCommunity) TableName() string {
@@ -42,7 +43,7 @@ type UpdateCommunity struct {
 	CommunityName    string `gorm:"column:communityname" json:"community_name"`
 	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
 	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
-	Icon             string `gorm:"column:icon" json:"icon"`
+	Icon             string `gorm:"column:communityicon" json:"icon"`
 }
 
 func (UpdateCommunity) TableName() string {

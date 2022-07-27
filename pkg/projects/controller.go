@@ -19,4 +19,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	projectRoutes.Put("/:projectid", h.UpdateProject)
 	projectRoutes.Get("/", h.GetProjects)
 	projectRoutes.Get("/:projectid", h.GetProject)
+	projectRoutes.Delete("/:projectid", h.DeleteProject)
 }

@@ -1,6 +1,7 @@
 package community
 
 import (
+	"github.com/VncntDzn/community-tracker-api/pkg/middleware"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -16,6 +17,7 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	communityRoutes := app.Group("/api/community")
 	communityRoutes.Get("/job-level", h.GetJobLevel)
 	communityRoutes.Get("/", h.GetCommunity)
-	communityRoutes.Post("/", h.AddCommunity)
-	communityRoutes.Put("/:communityid", h.UpdateCommunity)
+	communityRoutes.Get("/percentage", h.GetCommunityWithmembersPercentage)
+	communityRoutes.Post("/", middleware.AuthMiddleware, h.AddCommunity)
+	communityRoutes.Put("/:communityid", middleware.AuthMiddleware, h.UpdateCommunity)
 }

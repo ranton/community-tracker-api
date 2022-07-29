@@ -1,15 +1,15 @@
 package peopleDetails
 
 import (
-	"strconv"
-	"strings"
-
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
 type AddPeopleDetailsRequestBody struct {
+	People								int  `validate:"required" gorm:"column:peopleid" json:"peopleid"`
+	PeopleDetailsDesc					int  `gorm:"column:peopledetailsdescid" json:"peopledetailsdescid"`
+	IsActive							bool `gorm:"column:activeflag" json:"isactive"`
 	Gop                                 bool `gorm:"column:has_gop" json:"gop"`
 	ExpSettMtg                          bool `gorm:"column:has_expectation_setting_mtg" json:"expectation_setting_mtg"`
 	SignedExpSettDoc                    bool `gorm:"column:has_signed_expectation_setting_document" json:"signed_expectation_setting_document"`
@@ -29,6 +29,9 @@ type AddPeopleDetailsRequestBody struct {
 
 func (h handler) AddPeopleDetails(c *fiber.Ctx) error {
 	body := AddPeopleDetailsRequestBody{
+		People: 0,
+		PeopleDetailsDesc: 1,
+		IsActive: false,
 		Gop: false,               
 		ExpSettMtg: false,                        
 		SignedExpSettDoc: false,               
@@ -51,30 +54,13 @@ func (h handler) AddPeopleDetails(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
+	var peopleDetails = models.AddPeopleDetails(body)
+
 	// create transaction for insert
 	transactionErr := h.DB.Transaction(func(tx *gorm.DB) error {
-		//insert people
-		if createPeopleErr := tx.Create(&body).Error; createPeopleErr != nil {
+		//insert peopledetails
+		if createPeopleErr := tx.Create(&peopleDetails).Error; createPeopleErr != nil {
 			return createPeopleErr
-		}
-
-		skillSet := strings.Split(body.Skills, ",")
-		var batchSkills []*models.InsertPrimarySkill
-		for _, skillId := range skillSet {
-			parsedSkill, _ := strconv.Atoi(skillId)
-			var skillItem models.InsertPrimarySkill
-			skillItem.PeopleId = people.PeopleId
-			skillItem.PeopleSkill = parsedSkill
-			skillItem.IsActive = true
-			batchSkills = append(batchSkills, &skillItem)
-		}
-
-		//insert skills
-		if len(batchSkills) > 0 {
-			if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {
-				// return any error will rollback
-				return insertSkillErr
-			}
 		}
 		return nil
 	})
@@ -83,5 +69,5 @@ func (h handler) AddPeopleDetails(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": fiber.StatusInternalServerError, "message": transactionErr.Error()})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success! Added Data!", "data": &people})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success! Added Data!", "data": &peopleDetails})
 }

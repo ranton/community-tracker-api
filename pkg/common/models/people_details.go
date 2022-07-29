@@ -1,6 +1,9 @@
 package models
 
 type AddPeopleDetails struct {
+	People								int  `gorm:"column:peopleid" json:"peopleid"`
+	PeopleDetailsDesc					int  `gorm:"column:peopledetailsdescid" json:"peopledetailsdescid"`
+	IsActive							bool `gorm:"column:activeflag" json:"isactive"`
 	Gop                                 bool `gorm:"column:has_gop" json:"gop"`
 	ExpSettMtg                          bool `gorm:"column:has_expectation_setting_mtg" json:"expectation_setting_mtg"`
 	SignedExpSettDoc                    bool `gorm:"column:has_signed_expectation_setting_document" json:"signed_expectation_setting_document"`

@@ -24,3 +24,12 @@ type UpdateAdminManager struct {
 func (UpdateAdminManager) TableName() string {
 	return "communityadminandmanager"
 }
+
+
+type UpdatePassword struct {
+	Password string `gorm:"column:password" json:"password"`
+}
+
+func (UpdatePassword) TableName() string {
+	return "communityadminandmanager"
+}

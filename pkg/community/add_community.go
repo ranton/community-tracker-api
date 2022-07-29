@@ -10,7 +10,8 @@ type AddCommunityBody struct {
 	CommunityName    string `gorm:"column:communityname" json:"community_name"`
 	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
 	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
-	Icon             string `gorm:"column:icon" json:"icon"`
+	Icon             string `gorm:"column:communityicon" json:"icon"`
+	IsActive		 bool 	`gorm:"column:isactive json:"is_active"`
 }
 
 func (h handler) AddCommunity(c *fiber.Ctx) error {
@@ -20,6 +21,7 @@ func (h handler) AddCommunity(c *fiber.Ctx) error {
 		CommunityManager: 0,
 		CommunityDesc:    "",
 		Icon:             "",
+		IsActive:		  true,
 	}
 
 	// parse body, attach to struct
@@ -33,6 +35,7 @@ func (h handler) AddCommunity(c *fiber.Ctx) error {
 	community.CommunityManager = body.CommunityManager
 	community.CommunityDesc = body.CommunityDesc
 	community.Icon = body.Icon
+	community.IsActive = body.IsActive
 
 	// insert new records
 	if result := h.DB.Create(&community); result.Error != nil {

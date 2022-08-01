@@ -10,6 +10,7 @@ import (
 func (h handler) UpdatePassword(c *fiber.Ctx) error {
 	id := c.Params("communityadminandmanagerid")
 	body := admin.UpdatePasswordRequest{
+		Password: "",
 		NewPassword: "",
 	}
 
@@ -24,8 +25,12 @@ func (h handler) UpdatePassword(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 
 	} else {
+		if !hash.Check(body.Password, community.Password) {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": fiber.StatusBadRequest, "message": "Invalid Password"})
+		}
+
 		if hash.Check(body.NewPassword, community.Password) {
-			return fiber.NewError(fiber.StatusBadRequest, "Same password")
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": fiber.StatusBadRequest, "message": "Same Password"})
 		}
 
 		mp := make(map[string]interface{})

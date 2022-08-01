@@ -3,10 +3,9 @@ package peopleDetails
 import (
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
-func (h handler) AddPeopleDetails(c *fiber.Ctx) error {
+func (h handler) UpdatePeopleDetails(c *fiber.Ctx) error {
 	body := models.AddPeopleDetails{
 		People: 0,
 		PeopleDetailsDesc: 1,
@@ -36,17 +35,14 @@ func (h handler) AddPeopleDetails(c *fiber.Ctx) error {
 	var peopleDetails = models.AddPeopleDetails(body)
 
 	// create transaction for insert
-	transactionErr := h.DB.Transaction(func(tx *gorm.DB) error {
-		//insert peopledetails
-		if createPeopleErr := tx.Create(&peopleDetails).Error; createPeopleErr != nil {
-			return createPeopleErr
-		}
-		return nil
-	})
+	if result := h.DB.Where("peopleid = ?", peopleDetails.People).First(&models.AddPeopleDetails{}); result.Error != nil {
 
-	if transactionErr != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": fiber.StatusInternalServerError, "message": transactionErr.Error()})
+		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
+
+	} else {
+
+		h.DB.Model(&models.AddPeopleDetails{}).Where("peopleid = ?", peopleDetails.People).Updates(&peopleDetails)
+
+		return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Updated data!", "data": &peopleDetails})
 	}
-
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success! Added Data!", "data": &peopleDetails})
 }

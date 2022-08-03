@@ -12,11 +12,13 @@ type PeopleWithSkill struct {
     PeopleSkillsId  int `gorm:"column:peopleskillsid"`
     PeopleSkillsDesc    string  `gorm:"column:peopleskillsdesc"`
 	ProjectId    int  `gorm:"column:projectid"`
+    PeopleCount  int `gorm:"column:peoplecount"`
 }
 type PeopleWithSkillResponseBody struct {
     Fullname    string  `gorm:"column:fullname" json:"full_name"`
     Skills  []string `gorm:"column:skills" json:"skills"`
 	ProjectId int `gorm:"column:projectid" json:"project_id"`
+    PeopleCount int `gorm:"column:peoplecount" json:"people_count"`
 }
 func (h handler) GetPeopleBySkills(c *fiber.Ctx) error {
     body := GetPeopleRequestBody{
@@ -38,12 +40,13 @@ func (h handler) GetPeopleBySkills(c *fiber.Ctx) error {
     var people []PeopleWithSkill
     //subquery between peopleprimaryskills and peopleskills
     sub := h.DB.Table("peopleprimaryskills").Select("peopleprimaryskills.peopleid, peopleskills.peopleskillsid, peopleskills.peopleskillsdesc").Joins("inner join peopleskills on peopleprimaryskills.peopleskillsid = peopleskills.peopleskillsid")
-    if result := h.DB.Table("people").Select("projectid, fullname, sub.peopleskillsid, sub.peopleskillsdesc").Joins("inner join (?) as sub on sub.peopleid = people.peopleid", sub).Where("sub.peopleskillsid IN (?)", t2).Scan(&people); result.Error != nil {
+    if result := h.DB.Table("people").Select("projectid, fullname, sub.peopleskillsid, sub.peopleskillsdesc, (select count(peopleid) from people) as peoplecount").Joins("inner join (?) as sub on sub.peopleid = people.peopleid", sub).Where("sub.peopleskillsid IN (?)", t2).Scan(&people); result.Error != nil {
         return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
     }
     occurred := map[string]bool{}
 	var currentProject int
     var currentMember string
+    var currentPeopleCount int
     currentSkills := []string{}
     var members []PeopleWithSkillResponseBody
     for index, p := range people {
@@ -54,6 +57,7 @@ func (h handler) GetPeopleBySkills(c *fiber.Ctx) error {
                 Fullname: currentMember,
                 Skills: currentSkills,
 				ProjectId: currentProject,
+                PeopleCount: currentPeopleCount,
             }
             //dont allow empty element to be pushed
             if index != 0 {
@@ -63,6 +67,7 @@ func (h handler) GetPeopleBySkills(c *fiber.Ctx) error {
             currentMember = p.Fullname
             currentSkills = nil
 			currentProject = p.ProjectId
+            currentPeopleCount = p.PeopleCount
         }
         currentSkills = append(currentSkills, p.PeopleSkillsDesc)
         //push last element before ending the loop
@@ -71,6 +76,7 @@ func (h handler) GetPeopleBySkills(c *fiber.Ctx) error {
                 Fullname: currentMember,
                 Skills: currentSkills,
 				ProjectId: currentProject,
+                PeopleCount: currentPeopleCount,
             }
             members = append(members, m);
         }

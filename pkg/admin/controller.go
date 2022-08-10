@@ -18,4 +18,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	route := app.Group("/api/admin")
 	route.Post("/", middleware.AuthMiddleware, h.CreateAdmin)
 	route.Put("/:communityadminandmanagerid", middleware.AuthMiddleware, h.UpdateAdminDetails)
+	route.Put("/:communityadminandmanagerid/password", h.UpdatePassword)
 }

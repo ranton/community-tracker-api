@@ -12,5 +12,5 @@ func (h handler) GetJobLevel(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
 
-	return c.Status(fiber.StatusOK).JSON(&job_level)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": fiber.StatusCreated, "message": "Success!", "data": &job_level})
 }

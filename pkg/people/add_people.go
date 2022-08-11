@@ -72,6 +72,11 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 		}
 
 		skillSet := strings.Split(body.Skills, ",")
+		
+		if (len(skillSet) == 1 && skillSet[0] == "") || len(skillSet) == 0 {
+			return nil
+		}
+
 		var batchSkills []*models.InsertPrimarySkill
 		for _, skillId := range skillSet {
 			parsedSkill, _ := strconv.Atoi(skillId)
@@ -81,7 +86,6 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 			skillItem.IsActive = true
 			batchSkills = append(batchSkills, &skillItem)
 		}
-
 		//insert skills
 		if len(batchSkills) > 0 {
 			if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {

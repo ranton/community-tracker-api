@@ -53,7 +53,7 @@ func (h handler) UpdateCommunity(c *fiber.Ctx) error {
 		mp["communityname"] = body.CommunityName
 		mp["communitymgrid"] = body.CommunityManager
 		mp["communitydesc"] = body.CommunityDesc
-		mp["icon"] = body.Icon
+		mp["communityicon"] = body.Icon
 
 		h.DB.Model(community).Where("communityid = ?", trim_id).Updates(mp)
 

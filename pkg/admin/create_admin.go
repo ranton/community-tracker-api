@@ -19,7 +19,7 @@ func (h handler) CreateAdmin(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
 	}
 
-	hashedPassword := hash.Make(request.CognizantId)
+	hashedPassword := hash.Make(request.Password)
 	adminData := &models.AdminManager{
 		AdminName:   request.AdminName,
 		CognizantID: request.CognizantId,

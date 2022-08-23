@@ -24,6 +24,7 @@ type AddPeopleRequestBody struct {
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
 	Skills         string `json:"skills"`
+	Details				 string `json:"details"`
 }
 
 func (h handler) AddPeople(c *fiber.Ctx) error {
@@ -73,26 +74,46 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 
 		skillSet := strings.Split(body.Skills, ",")
 		
-		if (len(skillSet) == 1 && skillSet[0] == "") || len(skillSet) == 0 {
-			return nil
-		}
+		if (len(skillSet) == 1 && skillSet[0] != "") || len(skillSet) > 1 {
+			var batchSkills []*models.InsertPrimarySkill
+			for _, skillId := range skillSet {
+				parsedSkill, _ := strconv.Atoi(skillId)
+				var skillItem models.InsertPrimarySkill
+				skillItem.PeopleId = people.PeopleId
+				skillItem.PeopleSkill = parsedSkill
+				skillItem.IsActive = true
+				batchSkills = append(batchSkills, &skillItem)
+			}
 
-		var batchSkills []*models.InsertPrimarySkill
-		for _, skillId := range skillSet {
-			parsedSkill, _ := strconv.Atoi(skillId)
-			var skillItem models.InsertPrimarySkill
-			skillItem.PeopleId = people.PeopleId
-			skillItem.PeopleSkill = parsedSkill
-			skillItem.IsActive = true
-			batchSkills = append(batchSkills, &skillItem)
-		}
-		//insert skills
-		if len(batchSkills) > 0 {
-			if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {
-				// return any error will rollback
-				return insertSkillErr
+			//insert skills
+			if len(batchSkills) > 0 {
+				if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {
+					// return any error will rollback
+					return insertSkillErr
+				}
 			}
 		}
+
+		details := strings.Split(body.Details, ",")
+
+		if (len(details) == 1 && details[0] != "") || len(details) > 1 {
+			var batchDetails []*models.InsertPeopleDetail
+			for _, detailId := range details {
+				parsedDetailId, _ := strconv.Atoi(detailId)
+				var detailItem models.InsertPeopleDetail
+				detailItem.PeopleId = people.PeopleId
+				detailItem.PeopleDetailsDescId = parsedDetailId
+				detailItem.ActiveFlag = true
+				batchDetails = append(batchDetails, &detailItem)
+			}
+
+			if len(batchDetails) > 0 {
+				if insertDetailsErr := tx.Create(&batchDetails).Error; insertDetailsErr != nil {
+					return insertDetailsErr
+				}
+			}
+		}
+
 		return nil
 	})
 

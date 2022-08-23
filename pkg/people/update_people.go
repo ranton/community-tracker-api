@@ -26,6 +26,7 @@ type UpdatePeopleRequestBody struct {
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
 	Skills         string `json:"skills"`
+	Details				 string `json:"details"`
 }
 
 func (h handler) UpdatePeople(c *fiber.Ctx) error {
@@ -45,6 +46,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		Isactive:       true,
 		Isprobationary: false,
 		Skills:         "",
+		Details:        "",
 	}
 
 	trim_id := strings.TrimLeft(id, "peopleid=")
@@ -125,6 +127,23 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		fmt.Print(batchSkills)
 		fmt.Print(body.Skills)
 
+		details := strings.Split(body.Details, ",")
+
+		var hasDetails = false
+		var batchDetails []*models.InsertPeopleDetail
+		if body.Details != "" {
+			hasDetails = true
+			for _, detailId := range details {
+				parsedDetailId, _ := strconv.Atoi(detailId)
+				var detailItem models.InsertPeopleDetail
+				detailItem.PeopleId = parsedMemberId
+				detailItem.PeopleDetailsDescId = parsedDetailId
+				detailItem.ActiveFlag = true
+				batchDetails = append(batchDetails, &detailItem)
+			}
+		}
+
+
 		transactionErr := h.DB.Transaction(func(tx *gorm.DB) error {
 			//update people
 			if updatePeopleErr := tx.Model(people).Where("peopleid = ?", trim_id).Updates(mp).Save(&people).Error; updatePeopleErr != nil {
@@ -141,6 +160,16 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 				if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {
 					// return any error will rollback
 					return insertSkillErr
+				}
+			}
+
+			if delDetailsErr := tx.Delete(&models.PeopleDetails{}, "peopleid = ?", parsedMemberId).Error; delDetailsErr != nil {
+				return delDetailsErr
+			}
+
+			if (hasDetails) {
+				if insertDetailsErr := tx.Create(&batchDetails).Error; insertDetailsErr != nil {
+					return insertDetailsErr
 				}
 			}
 			return nil

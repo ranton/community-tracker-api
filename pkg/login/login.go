@@ -11,13 +11,16 @@ import (
 	"github.com/VncntDzn/community-tracker-api/pkg/utils/hash"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
+	"github.com/go-playground/validator/v10"
 )
 
 func (h handler) Login(ctx *fiber.Ctx) error {
 	var loginRequest login.LoginRequest
 	ctx.BodyParser(&loginRequest)
 
-	if loginRequest.CognizantId == "" || loginRequest.Password == "" {
+	var validate = validator.New()
+	validateErr := validate.Struct(loginRequest)
+	if validateErr != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": fiber.StatusBadRequest, "message": "Please complete inputs."})
 	}
 

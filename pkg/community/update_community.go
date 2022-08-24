@@ -5,13 +5,14 @@ import (
 
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/go-playground/validator/v10"
 )
 
 type UpdateCommunityRequestBody struct {
 	//CommunityID      int    `gorm:"primaryKey;column:communityid" json:"community_id"`
-	CommunityName    string `gorm:"column:communityname" json:"community_name"`
-	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
-	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
+	CommunityName    string `validate:"required" gorm:"column:communityname" json:"community_name"`
+	CommunityManager int    `validate:"required" gorm:"column:communitymgrid" json:"community_manager"`
+	CommunityDesc    string `validate:"required" gorm:"column:communitydesc" json:"community_description"`
 	Icon             string `gorm:"column:communityicon" json:"icon"`
 }
 
@@ -22,6 +23,12 @@ func (h handler) UpdateCommunity(c *fiber.Ctx) error {
 		CommunityManager: 0,
 		CommunityDesc:    "",
 		Icon:             "",
+	}
+
+	var validate = validator.New()
+	validateErr := validate.Struct(body)
+	if validateErr != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
 	}
 
 	trim_id := strings.TrimLeft(id, "communityid=")

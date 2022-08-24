@@ -1,6 +1,6 @@
 package admin
 
 type UpdatePasswordRequest struct {
-	Password string `gorm:"column:password" json:"password"`
-	NewPassword string `gorm:"column:password" json:"newpassword"`
+	Password string `validate:"required" gorm:"column:password" json:"password"`
+	NewPassword string `validate:"required" gorm:"column:password" json:"newpassword"`
 }

@@ -4,6 +4,7 @@ import (
 	admin "github.com/VncntDzn/community-tracker-api/pkg/admin/requests"
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/go-playground/validator/v10"
 )
 
 func (h handler) UpdateAdminDetails(c *fiber.Ctx) error {
@@ -18,6 +19,12 @@ func (h handler) UpdateAdminDetails(c *fiber.Ctx) error {
 	// parse body, attach to UpdateCityRequestBody struct
 	if err := c.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	var validate = validator.New()
+	validateErr := validate.Struct(body)
+	if validateErr != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
 	}
 
 	var community models.UpdateAdminManager

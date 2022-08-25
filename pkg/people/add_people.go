@@ -15,7 +15,7 @@ type AddPeopleRequestBody struct {
 	Lastname       string `gorm:"column:lastname" json:"last_name"`
 	Firstname      string `gorm:"column:firstname" json:"first_name"`
 	Middlename     string `gorm:"column:middlename" json:"middle_name"`
-	Fullname       string `validate:"required,alpha" gorm:"column:fullname" json:"full_name"`
+	Fullname       string `validate:"required" gorm:"column:fullname" json:"full_name"`
 	Csvemail       string `validate:"required,email" gorm:"column:csvemail" json:"csv_email"`
 	Hireddate      string `validate:"required" gorm:"column:hireddate" json:"hired_date"`
 	Communityid    int    `validate:"required" gorm:"column:communityid" json:"community_id"`
@@ -26,6 +26,7 @@ type AddPeopleRequestBody struct {
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
 	Skills         string `json:"skills"`
 	Details				 string `json:"details"`
+	Projectlead 	 int 		`validate:"required" gorm:"column:communityadminandmanagerid" json:"project_lead"`
 }
 
 func (h handler) AddPeople(c *fiber.Ctx) error {
@@ -43,6 +44,7 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 		Projectid:      0,
 		Isactive:       true,
 		Isprobationary: false,
+		Projectlead:		0,
 	}
 
 	// parse body, attach to AddPeopleRequestBody struct
@@ -71,6 +73,7 @@ func (h handler) AddPeople(c *fiber.Ctx) error {
 	people.Projectid = body.Projectid
 	people.Isactive = body.Isactive
 	people.Isprobationary = body.Isprobationary
+	people.Projectlead = body.Projectlead
 
 	// create transaction for insert
 	transactionErr := h.DB.Transaction(func(tx *gorm.DB) error {

@@ -17,7 +17,7 @@ type UpdatePeopleRequestBody struct {
 	Lastname       string `gorm:"column:lastname" json:"last_name"`
 	Firstname      string `gorm:"column:firstname" json:"first_name"`
 	Middlename     string `gorm:"column:middlename" json:"middle_name"`
-	Fullname       string `validate:"required,alpha" gorm:"column:fullname" json:"full_name"`
+	Fullname       string `validate:"required" gorm:"column:fullname" json:"full_name"`
 	Csvemail       string `validate:"required,email" gorm:"column:csvemail" json:"csv_email"`
 	Hireddate      string `validate:"required" gorm:"column:hireddate" json:"hired_date"`
 	Communityid    int    `validate:"required" gorm:"column:communityid" json:"community_id"`
@@ -28,6 +28,7 @@ type UpdatePeopleRequestBody struct {
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
 	Skills         string `json:"skills"`
 	Details				 string `json:"details"`
+	Projectlead 	 int 		`validate:"required" gorm:"column:communityadminandmanagerid" json:"project_lead"`
 }
 
 func (h handler) UpdatePeople(c *fiber.Ctx) error {
@@ -48,12 +49,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		Isprobationary: false,
 		Skills:         "",
 		Details:        "",
-	}
-
-	var validate = validator.New()
-	validateErr := validate.Struct(body)
-	if validateErr != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
+		Projectlead:		0,
 	}
 
 	trim_id := strings.TrimLeft(id, "peopleid=")
@@ -61,6 +57,13 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 	// parse body, attach to UpdateCityRequestBody struct
 	if err := c.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	var validate = validator.New()
+	validateErr := validate.Struct(body)
+	if validateErr != nil {
+		fmt.Println(validateErr)
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
 	}
 
 	var people models.Update_People
@@ -78,6 +81,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 	people.Projectid = body.Projectid
 	people.Isactive = body.Isactive
 	people.Isprobationary = body.Isprobationary
+	people.Projectlead = body.Projectlead
 
 	if result := h.DB.First(&people, "peopleid = ?", trim_id); result.Error != nil {
 
@@ -98,6 +102,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		people.Projectid = body.Projectid
 		people.Isactive = body.Isactive
 		people.Isprobationary = body.Isprobationary
+		people.Projectlead = body.Projectlead
 
 		mp := make(map[string]interface{})
 		mp["cognizantid"] = body.Cognizantid
@@ -113,6 +118,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		mp["projectid"] = body.Projectid
 		mp["isactive"] = body.Isactive
 		mp["isprobationary"] = body.Isprobationary
+		mp["communityadminandmanagerid"] = body.Projectlead
 
 		skillSet := strings.Split(body.Skills, ",")
 

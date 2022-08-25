@@ -25,17 +25,17 @@ func (h handler) UpdateCommunity(c *fiber.Ctx) error {
 		Icon:             "",
 	}
 
-	var validate = validator.New()
-	validateErr := validate.Struct(body)
-	if validateErr != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
-	}
-
 	trim_id := strings.TrimLeft(id, "communityid=")
 
 	// parse body, attach to UpdateCityRequestBody struct
 	if err := c.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	var validate = validator.New()
+	validateErr := validate.Struct(body)
+	if validateErr != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
 	}
 
 	var community models.UpdateCommunity

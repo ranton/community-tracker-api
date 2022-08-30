@@ -15,7 +15,6 @@ type People struct {
 	Projectid      int    `gorm:"column:projectid" json:"project_id"`
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
-	Projectlead 	 int 		`gorm:"column:communityadminandmanagerid" json:"project_lead"`
 }
 
 func (People) TableName() string {
@@ -37,7 +36,6 @@ type Add_People struct {
 	Projectid      int    `gorm:"column:projectid" json:"project_id"`
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
-	Projectlead 	 int 		`gorm:"column:communityadminandmanagerid" json:"project_lead"`
 }
 
 func (Add_People) TableName() string {
@@ -58,7 +56,6 @@ type Update_People struct {
 	Projectid      int    `gorm:"column:projectid" json:"project_id"`
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
-	Projectlead 	 int 		`gorm:"column:communityadminandmanagerid" json:"project_lead"`
 }
 
 func (Update_People) TableName() string {
@@ -85,5 +82,4 @@ type PeopleWithSkills struct {
 	Isprobationary bool       				 	`json:"is_probationary"`
 	Skill          []SkillSet 				 	`json:"skills"`
 	Details				 []PeopleDetailsDesc 	`json:"details"`
-	Projectlead    int                  `json:"project_lead"`
 }

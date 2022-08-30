@@ -62,7 +62,6 @@ func (h handler) GetPeopleById(c *fiber.Ctx) error {
 		Isprobationary: PeopleId.Isprobationary,
 		Skill:          memberSkills,
 		Details:				detailsDescriptions,
-		Projectlead:		PeopleId.Projectlead,
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": responseData})
 }

@@ -13,6 +13,7 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	h := &handler{
 		DB: db,
 	}
-	citiesRoutes := app.Group("/api/managers")
-	citiesRoutes.Get("/", h.GetManagers)
+	routes := app.Group("/api/managers")
+	routes.Get("/", h.GetManagers)
+	routes.Get("/community", h.GetCommunityManagers)
 }

@@ -58,7 +58,7 @@ type CommunityWithMembersPercentage struct {
 	CommunityDesc  string `gorm:"column:communitydesc" json:"community_description"`
 	CommunityIcon          string `gorm:"column:communityicon" json:"icon"`
 	Percentage int `gorm:"column:percentage" json:"percentage"`
-	ManagerFullName string `gorm:"column:fullname" json:"manager_full_name"`
+	ManagerFullName string `gorm:"column:communityadminandmanagername" json:"manager_full_name"`
 }
 
 func (CommunityWithMembersPercentage) TableName() string {

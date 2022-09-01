@@ -14,5 +14,6 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 		DB: db,
 	}
 	route := app.Group("/api/peopledetails")
+	route.Get("/description", h.GetPeopleDetailsDesc)
 	route.Get("/", h.GetPeopleDetails)
 }

@@ -5,8 +5,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (h handler) GetPeopleDetails(c *fiber.Ctx) error {
-	var peopleDetails []models.PeopleDetails
+func (h handler) GetPeopleDetailsDesc(c *fiber.Ctx) error {
+	var peopleDetails []models.PeopleDetailsDesc
 
 	if result := h.DB.Find(&peopleDetails); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())

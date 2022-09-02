@@ -10,7 +10,9 @@ func (h handler) GetCommunityById(c *fiber.Ctx) error {
 
 	id := c.Params("communityid")
 
-	h.DB.First(&Community, "communityid = ?", id)
+	if result := h.DB.Where("isactive = ?", true).First(&Community, "communityid = ?", id); result.Error != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": fiber.StatusNotFound, "message": "Not Found"})
+	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": &Community})
 }

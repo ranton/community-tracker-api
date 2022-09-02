@@ -40,7 +40,7 @@ func (h handler) GetPeopleBySkills(c *fiber.Ctx) error {
     var people []PeopleWithSkill
     //subquery between peopleprimaryskills and peopleskills
     sub := h.DB.Table("peopleprimaryskills").Select("peopleprimaryskills.peopleid, peopleskills.peopleskillsid, peopleskills.peopleskillsdesc").Joins("inner join peopleskills on peopleprimaryskills.peopleskillsid = peopleskills.peopleskillsid")
-    if result := h.DB.Table("people").Select("projectid, fullname, sub.peopleskillsid, sub.peopleskillsdesc, (select count(peopleid) from people) as peoplecount").Joins("inner join (?) as sub on sub.peopleid = people.peopleid", sub).Where("sub.peopleskillsid IN (?)", t2).Scan(&people); result.Error != nil {
+    if result := h.DB.Table("people").Select("projectid, fullname, sub.peopleskillsid, sub.peopleskillsdesc, (select count(peopleid) from people) as peoplecount").Joins("inner join (?) as sub on sub.peopleid = people.peopleid", sub).Where("sub.peopleskillsid IN (?) AND people.isactive = ?", t2, true).Scan(&people); result.Error != nil {
         return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
     }
     occurred := map[string]bool{}

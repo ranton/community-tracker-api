@@ -8,7 +8,7 @@ import (
 func (h handler) GetJobLevel(c *fiber.Ctx) error {
 	var job_level []models.JobLevel
 
-	if result := h.DB.Find(&job_level); result.Error != nil {
+	if result := h.DB.Where("isactive = ?", true).Find(&job_level); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
 

@@ -8,7 +8,7 @@ import (
 
 type AddPeopleskillsBody struct {
 	Peopleskillsdesc string `validate:"required" gorm:"column:peopleskillsdesc" json:"peopleskills_desc"`
-	IsActive         bool   `validate:"required" gorm:"column:isactive" json:"is_active"`
+	IsActive         bool   `gorm:"column:isactive" json:"is_active"`
 }
 
 func (h handler) AddPeopleSkills(c *fiber.Ctx) error {

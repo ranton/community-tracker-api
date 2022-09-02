@@ -8,7 +8,7 @@ import (
 func (h handler) GetProjects(c *fiber.Ctx) error {
 	var proj []models.Project
 
-	if result := h.DB.Find(&proj); result.Error != nil {
+	if result := h.DB.Order("lower(projectdesc)").Find(&proj); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
 

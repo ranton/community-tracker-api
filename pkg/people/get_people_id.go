@@ -24,7 +24,7 @@ func (h handler) GetPeopleById(c *fiber.Ctx) error {
 	}
 
 	// Get Member Info
-	if result := h.DB.First(&PeopleId, id); result.Error != nil {
+	if result := h.DB.Where("isactive = ?", true).First(&PeopleId, id); result.Error != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": fiber.StatusNotFound, "message": "Not Found"})
 	}
 

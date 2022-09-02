@@ -8,7 +8,7 @@ import (
 func (h handler) GetPeople(c *fiber.Ctx) error {
 	var people []models.People
 
-	if result := h.DB.Find(&people); result.Error != nil {
+	if result := h.DB.Order("lower(fullname)").Where("isactive = ?", true).Find(&people); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
 

@@ -11,7 +11,7 @@ import (
 type UpdateProjectDetails struct {
 	/* ProjectId     int    `gorm:"primaryKey;column:project_id" json:"project_id"` */
 	ProjectName string `validate:"required" gorm:"column:projectdesc" json:"project_name"`
-	IsActive    bool   `validate:"required" gorm:"column:isactive" json:"is_active"`
+	IsActive    bool   `gorm:"column:isactive" json:"is_active"`
 }
 
 func (h handler) UpdateProject(c *fiber.Ctx) error {

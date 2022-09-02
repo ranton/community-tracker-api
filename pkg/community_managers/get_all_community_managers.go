@@ -8,7 +8,7 @@ import (
 func (h handler) GetCommunityManagers(c *fiber.Ctx) error {
 	var managers []models.AdminManager
 
-	if result := h.DB.Find(&managers); result.Error != nil {
+	if result := h.DB.Order("lower(communityadminandmanagername)").Where("isactive = ?", true).Find(&managers); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
 

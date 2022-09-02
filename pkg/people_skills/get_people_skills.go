@@ -8,7 +8,7 @@ import (
 func (h handler) GetPeopleSkills(c *fiber.Ctx) error {
 	var peopleskills []models.Peopleskills
 
-	if result := h.DB.Find(&peopleskills); result.Error != nil {
+	if result := h.DB.Order("lower(peopleskillsdesc)").Find(&peopleskills); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
 

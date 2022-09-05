@@ -7,25 +7,27 @@ import (
 
 	"github.com/VncntDzn/community-tracker-api/pkg/common/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
 
 type UpdatePeopleRequestBody struct {
 	//Peopleid    int    `gorm:"column:peopleid" json:"people_id"`
-	Cognizantid    int    `gorm:"column:cognizantid" json:"cognizantid_id"`
+	Cognizantid    int    `validate:"required" gorm:"column:cognizantid" json:"cognizantid_id"`
 	Lastname       string `gorm:"column:lastname" json:"last_name"`
 	Firstname      string `gorm:"column:firstname" json:"first_name"`
 	Middlename     string `gorm:"column:middlename" json:"middle_name"`
-	Fullname       string `gorm:"column:fullname" json:"full_name"`
-	Csvemail       string `gorm:"column:csvemail" json:"csv_email"`
-	Hireddate      string `gorm:"column:hireddate" json:"hired_date"`
-	Communityid    int    `gorm:"column:communityid" json:"community_id"`
-	Workstateid    int    `gorm:"column:workstateid" json:"workstate_id"`
-	Joblevelid     int    `gorm:"column:joblevelid" json:"joblevel_id"`
-	Projectid      int    `gorm:"column:projectid" json:"project_id"`
+	Fullname       string `validate:"required" gorm:"column:fullname" json:"full_name"`
+	Csvemail       string `validate:"required,email" gorm:"column:csvemail" json:"csv_email"`
+	Hireddate      string `validate:"required" gorm:"column:hireddate" json:"hired_date"`
+	Communityid    int    `validate:"required" gorm:"column:communityid" json:"community_id"`
+	Workstateid    int    `validate:"required" gorm:"column:workstateid" json:"workstate_id"`
+	Joblevelid     int    `validate:"required" gorm:"column:joblevelid" json:"joblevel_id"`
+	Projectid      int    `validate:"required" gorm:"column:projectid" json:"project_id"`
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
 	Skills         string `json:"skills"`
+	Details				 string `json:"details"`
 }
 
 func (h handler) UpdatePeople(c *fiber.Ctx) error {
@@ -45,6 +47,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		Isactive:       true,
 		Isprobationary: false,
 		Skills:         "",
+		Details:        "",
 	}
 
 	trim_id := strings.TrimLeft(id, "peopleid=")
@@ -52,6 +55,13 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 	// parse body, attach to UpdateCityRequestBody struct
 	if err := c.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	var validate = validator.New()
+	validateErr := validate.Struct(body)
+	if validateErr != nil {
+		fmt.Println(validateErr)
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
 	}
 
 	var people models.Update_People
@@ -125,6 +135,23 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		fmt.Print(batchSkills)
 		fmt.Print(body.Skills)
 
+		details := strings.Split(body.Details, ",")
+
+		var hasDetails = false
+		var batchDetails []*models.InsertPeopleDetail
+		if body.Details != "" {
+			hasDetails = true
+			for _, detailId := range details {
+				parsedDetailId, _ := strconv.Atoi(detailId)
+				var detailItem models.InsertPeopleDetail
+				detailItem.PeopleId = parsedMemberId
+				detailItem.PeopleDetailsDescId = parsedDetailId
+				detailItem.ActiveFlag = true
+				batchDetails = append(batchDetails, &detailItem)
+			}
+		}
+
+
 		transactionErr := h.DB.Transaction(func(tx *gorm.DB) error {
 			//update people
 			if updatePeopleErr := tx.Model(people).Where("peopleid = ?", trim_id).Updates(mp).Save(&people).Error; updatePeopleErr != nil {
@@ -141,6 +168,16 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 				if insertSkillErr := tx.Create(&batchSkills).Error; insertSkillErr != nil {
 					// return any error will rollback
 					return insertSkillErr
+				}
+			}
+
+			if delDetailsErr := tx.Delete(&models.PeopleDetails{}, "peopleid = ?", parsedMemberId).Error; delDetailsErr != nil {
+				return delDetailsErr
+			}
+
+			if (hasDetails) {
+				if insertDetailsErr := tx.Create(&batchDetails).Error; insertDetailsErr != nil {
+					return insertDetailsErr
 				}
 			}
 			return nil

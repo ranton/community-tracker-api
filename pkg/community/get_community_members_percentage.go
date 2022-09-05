@@ -7,8 +7,8 @@ import (
 
 func (h handler) GetCommunityWithmembersPercentage(c *fiber.Ctx) error {
 	var community_data []models.CommunityWithMembersPercentage
-	sub := h.DB.Table("people").Select("count(people.peopleid)*100/(select count(peopleid) from people) as percentage, community.communityname, community.communitydesc, community.communityicon, community.communityid, community.communitymgrid").Joins("right join community on people.communityid = community.communityid").Group("community.communityid").Order("community.communityid")
-    if result := h.DB.Table("people").Select("sub.percentage, sub.communityname, sub.communitydesc,sub.communityicon, sub.communityid, people.fullname").Joins("right join (?) as sub on people.peopleid = sub.communitymgrid", sub).Scan(&community_data); result.Error != nil {
+	sub := h.DB.Table("people").Select("count(people.peopleid)*100/(select count(peopleid) from people where isactive = true) as percentage, community.communityname, community.communitydesc, community.communityicon, community.communityid, community.communitymgrid").Joins("right join community on people.communityid = community.communityid and people.isactive = true").Where("community.isactive = true").Group("community.communityid").Order("lower(community.communityname)")
+    if result := h.DB.Table("communityadminandmanager").Select("sub.percentage, sub.communityname, sub.communitydesc,sub.communityicon, sub.communityid, communityadminandmanager.communityadminandmanagername").Joins("right join (?) as sub on communityadminandmanager.communityadminandmanagerid = sub.communitymgrid", sub).Scan(&community_data); result.Error != nil {
         return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
     }
 

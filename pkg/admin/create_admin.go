@@ -25,8 +25,12 @@ func (h handler) CreateAdmin(ctx *fiber.Ctx) error {
 		CognizantID: request.CognizantId,
 		Email:       request.Email,
 		Password:    hashedPassword,
-		RoleType:    "admin",
+		RoleType:    "manager",
 		IsActive:    true,
+	}
+	
+	if result := h.DB.First(&adminData, "cognizantid = ?", request.CognizantId); result.Error == nil {
+		return ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": "Cognizant id exists!"})
 	}
 
 	if insertErr := h.DB.Create(&adminData).Error; insertErr != nil {

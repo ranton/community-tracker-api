@@ -1,6 +1,6 @@
 package login
 
 type LoginRequest struct {
-	CognizantId string `json:"cognizant_id"`
-	Password    string `json:"password"`
+	CognizantId string `validate:"required" json:"cognizant_id"`
+	Password    string `validate:"required" json:"password"`
 }

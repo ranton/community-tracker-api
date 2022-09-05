@@ -20,4 +20,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	communityRoutes.Get("/percentage", h.GetCommunityWithmembersPercentage)
 	communityRoutes.Post("/", middleware.AuthMiddleware, h.AddCommunity)
 	communityRoutes.Put("/:communityid", middleware.AuthMiddleware, h.UpdateCommunity)
+	communityRoutes.Get("/:communityid", h.GetCommunityById)
 }

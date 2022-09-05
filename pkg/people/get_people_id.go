@@ -11,6 +11,8 @@ func (h handler) GetPeopleById(c *fiber.Ctx) error {
 	var PeopleId models.People
 	var skills []models.PeoplePrimarySkills
 	var memberSkills []models.SkillSet
+	var details []models.PeopleDetails
+	var detailsDescriptions []models.PeopleDetailsDesc
 
 	id := c.Params("people_id")
 
@@ -22,7 +24,7 @@ func (h handler) GetPeopleById(c *fiber.Ctx) error {
 	}
 
 	// Get Member Info
-	if result := h.DB.First(&PeopleId, id); result.Error != nil {
+	if result := h.DB.Where("isactive = ?", true).First(&PeopleId, id); result.Error != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": fiber.StatusNotFound, "message": "Not Found"})
 	}
 
@@ -35,6 +37,16 @@ func (h handler) GetPeopleById(c *fiber.Ctx) error {
 
 	// Get skills descriptions
 	h.DB.Where("peopleskillsid IN ?", skillsListIds).Find(&memberSkills)
+
+
+	h.DB.Where(&models.PeopleDetails{PeopleId: parsedId}).Find(&details)
+	var detailsListIds []int
+	for _, detailItem := range details {
+		detailsListIds = append(detailsListIds, detailItem.PeopleDetailsDescId)
+	}
+
+	h.DB.Where("peopledetailsdescid IN ?", detailsListIds).Find(&detailsDescriptions)
+
 
 	responseData := models.PeopleWithSkills{
 		Peopleid:       PeopleId.Peopleid,
@@ -49,6 +61,7 @@ func (h handler) GetPeopleById(c *fiber.Ctx) error {
 		Isactive:       PeopleId.Isactive,
 		Isprobationary: PeopleId.Isprobationary,
 		Skill:          memberSkills,
+		Details:				detailsDescriptions,
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": responseData})
 }

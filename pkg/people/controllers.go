@@ -2,6 +2,7 @@ package people
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/VncntDzn/community-tracker-api/pkg/middleware"
 	"gorm.io/gorm"
 )
 
@@ -15,8 +16,9 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	}
 	peopleRoutes := app.Group("/api/people")
 	peopleRoutes.Get("/", h.GetPeople)
+	peopleRoutes.Get("/workstate", h.GetWorkState)
 	peopleRoutes.Get("/:people_id", h.GetPeopleById)
-	peopleRoutes.Post("/", h.AddPeople)
-	peopleRoutes.Put("/:peopleid", h.UpdatePeople)
+	peopleRoutes.Post("/", middleware.AuthMiddleware, h.AddPeople)
+	peopleRoutes.Put("/:peopleid", middleware.AuthMiddleware, h.UpdatePeople)
 	peopleRoutes.Post("/skills", h.GetPeopleBySkills)
 }

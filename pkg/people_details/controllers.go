@@ -1,4 +1,4 @@
-package community_managers
+package people_details
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -13,7 +13,7 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	h := &handler{
 		DB: db,
 	}
-	routes := app.Group("/api/managers")
-	routes.Get("/", h.GetManagers)
-	routes.Get("/community", h.GetCommunityManagers)
+	route := app.Group("/api/peopledetails")
+	route.Get("/description", h.GetPeopleDetailsDesc)
+	route.Get("/", h.GetPeopleDetails)
 }

@@ -8,11 +8,18 @@ import (
 	requests "github.com/VncntDzn/community-tracker-api/pkg/member_skills/requests"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
+	"github.com/go-playground/validator/v10"
 )
 
 func (h handler) AddMemberSkill(c *fiber.Ctx) error {
 	skillsRequest := new(requests.SkillsListRequest)
 	c.BodyParser(&skillsRequest)
+
+	var validate = validator.New()
+	validateErr := validate.Struct(skillsRequest)
+	if validateErr != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": fiber.StatusUnprocessableEntity, "message": validateErr})
+	}
 
 	skillSet := strings.Split(skillsRequest.Skills, ",")
 

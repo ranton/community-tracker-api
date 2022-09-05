@@ -9,7 +9,7 @@ import (
 type AddCommunityBody struct {
 	CommunityID      int    `gorm:"primaryKey;column:communityid" json:"community_id"`
 	CommunityName    string `validate:"required" gorm:"column:communityname" json:"community_name"`
-	CommunityManager int    `validate:"required" gorm:"column:communitymgrid" json:"community_manager"`
+	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
 	CommunityDesc    string `validate:"required" gorm:"column:communitydesc" json:"community_description"`
 	Icon             string `gorm:"column:communityicon" json:"icon"`
 	IsActive		 bool 	`gorm:"column:isactive" json:"is_active"`

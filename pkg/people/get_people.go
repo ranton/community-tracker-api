@@ -12,11 +12,11 @@ func (h handler) GetPeople(c *fiber.Ctx) error {
 	var searchCriteria = strings.ToLower(strings.TrimSpace(c.Query("searchCriteria")))
 
 	if searchCriteria == "" {
-		if result := h.DB.Order("lower(fullname)").Where("isactive = ?", true).Find(&people); result.Error != nil {
+		if result := h.DB.Order("lower(fullname)").Where("isactive = ?", true).Preload("Community", "isactive = ?", true).Preload("Community.Manager").Find(&people); result.Error != nil {
 			return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 		}
 	} else {
-		if result := h.DB.Order("lower(fullname)").Where(h.DB.Where("isactive = ?", true).Where(h.DB.Where("lower(fullname) like ?", "%" + searchCriteria + "%").Or("cast(cognizantid as text) like ?", "%" + searchCriteria + "%"))).Find(&people); result.Error != nil {
+		if result := h.DB.Order("lower(fullname)").Where(h.DB.Where("isactive = ?", true).Where(h.DB.Where("lower(fullname) like ?", "%" + searchCriteria + "%").Or("cast(cognizantid as text) like ?", "%" + searchCriteria + "%"))).Preload("Community", "isactive = ?", true).Preload("Community.Manager").Find(&people); result.Error != nil {
 			return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 		}
 	}

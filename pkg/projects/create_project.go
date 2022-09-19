@@ -25,6 +25,7 @@ func (h handler) CreateProject(c *fiber.Ctx) error {
 
 	projectData := models.Project{
 		ProjectName: projectRequest.ProjectName,
+		ProjectCode: projectRequest.ProjectCode,
 		IsActive:    projectRequest.IsActive,
 	}
 

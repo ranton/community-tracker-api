@@ -11,6 +11,7 @@ import (
 type UpdateProjectDetails struct {
 	/* ProjectId     int    `gorm:"primaryKey;column:project_id" json:"project_id"` */
 	ProjectName string `validate:"required" gorm:"column:projectdesc" json:"project_name"`
+	ProjectCode string `validate:"required" gorm:"column:projectcode" json:"project_code"`
 	IsActive    bool   `gorm:"column:isactive" json:"is_active"`
 }
 
@@ -18,6 +19,7 @@ func (h handler) UpdateProject(c *fiber.Ctx) error {
 	id := c.Params("projectid")
 	body := UpdateProjectDetails{
 		ProjectName: "",
+		ProjectCode: "",
 		IsActive:    false,
 	}
 
@@ -37,6 +39,7 @@ func (h handler) UpdateProject(c *fiber.Ctx) error {
 	var project models.Project
 
 	project.ProjectName = body.ProjectName
+	project.ProjectCode = body.ProjectCode
 	project.IsActive = body.IsActive
 
 	if result := h.DB.First(&project, id); result.Error != nil {
@@ -46,10 +49,12 @@ func (h handler) UpdateProject(c *fiber.Ctx) error {
 	} else {
 
 		project.ProjectName = body.ProjectName
+		project.ProjectCode = body.ProjectCode
 		project.IsActive = body.IsActive
 
 		mp := make(map[string]interface{})
 		mp["projectdesc"] = body.ProjectName
+		mp["projectcode"] = body.ProjectCode
 		mp["is_active"] = body.IsActive
 
 		h.DB.Model(project).Where("projectid = ?", trim_id).Updates(mp)

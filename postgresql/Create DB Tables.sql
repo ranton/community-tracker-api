@@ -84,6 +84,7 @@ CREATE TABLE peopleskills (
 CREATE TABLE project (
 	projectid int NOT NULL GENERATED ALWAYS AS IDENTITY,
 	projectdesc varchar(100) NOT NULL,
+	projectcode varchar(100) NOT NULL,
 	isactive bool NOT NULL,
 	CONSTRAINT project_pkey PRIMARY KEY (projectid)
 );

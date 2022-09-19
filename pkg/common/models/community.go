@@ -15,11 +15,11 @@ func (Community) TableName() string {
 }
 
 type CommunityMembers struct {
-	CommunityID              string   `gorm:"column:communityid" json:"community_id"`
-	CommunityName            string   `gorm:"column:communityname" json:"community_name"`
-	CommunityManagerPeopleID string   `gorm:"column:communitymgrid" json:"-"`
-	Members                  []People `gorm:"foreignKey:Communityid;references:CommunityID" json:"members"`
-	Manager                  AdminManager   `gorm:"foreignKey:ID;references:CommunityManagerPeopleID" json:"manager"`
+	CommunityID              string       `gorm:"column:communityid" json:"community_id"`
+	CommunityName            string       `gorm:"column:communityname" json:"community_name"`
+	CommunityManagerPeopleID string       `gorm:"column:communitymgrid" json:"-"`
+	Members                  []People     `gorm:"foreignKey:Communityid;references:CommunityID" json:"members"`
+	Manager                  AdminManager `gorm:"foreignKey:ID;references:CommunityManagerPeopleID" json:"manager"`
 }
 
 func (CommunityMembers) TableName() string {
@@ -32,7 +32,7 @@ type CreateCommunity struct {
 	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
 	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
 	Icon             string `gorm:"column:communityicon" json:"icon"`
-	IsActive		 bool	`gorm:"column:isactive" json:"is_active"`
+	IsActive         bool   `gorm:"column:isactive" json:"is_active"`
 }
 
 func (CreateCommunity) TableName() string {
@@ -45,7 +45,7 @@ type UpdateCommunity struct {
 	CommunityManager int    `gorm:"column:communitymgrid" json:"community_manager"`
 	CommunityDesc    string `gorm:"column:communitydesc" json:"community_description"`
 	Icon             string `gorm:"column:communityicon" json:"icon"`
-	IsActive       	 bool   `gorm:"column:isactive" json:"is_active"`
+	IsActive         bool   `gorm:"column:isactive" json:"is_active"`
 }
 
 func (UpdateCommunity) TableName() string {
@@ -53,15 +53,15 @@ func (UpdateCommunity) TableName() string {
 }
 
 type CommunityWithMembersPercentage struct {
-	CommunityID    int    `gorm:"column:communityid" json:"community_id"`
-	CommunityName  string `gorm:"column:communityname" json:"community_name"`
-	CommunityDesc  string `gorm:"column:communitydesc" json:"community_description"`
-	CommunityIcon          string `gorm:"column:communityicon" json:"icon"`
-	Percentage int `gorm:"column:percentage" json:"percentage"`
+	CommunityID     int    `gorm:"column:communityid" json:"community_id"`
+	CommunityName   string `gorm:"column:communityname" json:"community_name"`
+	CommunityDesc   string `gorm:"column:communitydesc" json:"community_description"`
+	CommunityIcon   string `gorm:"column:communityicon" json:"icon"`
+	Percentage      int    `gorm:"column:percentage" json:"percentage"`
+	Members         int    `gorm:"column:members" json:"members"`
 	ManagerFullName string `gorm:"column:communityadminandmanagername" json:"manager_full_name"`
 }
 
 func (CommunityWithMembersPercentage) TableName() string {
 	return "community"
 }
-

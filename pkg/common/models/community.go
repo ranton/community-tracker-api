@@ -1,13 +1,13 @@
 package models
 
-type Community struct {
-	CommunityID    int    `gorm:"column:communityid" json:"community_id"`
-	CommunityName  string `gorm:"column:communityname" json:"community_name"`
-	CommunityDesc  string `gorm:"column:communitydesc" json:"community_description"`
-	CommunityMgrID string `gorm:"column:communitymgrid" json:"community_manager"`
-	Icon           string `gorm:"column:communityicon" json:"icon"`
-	IsActive		 	 bool	`gorm:"column:isactive" json:"is_active"`
-	//	Manager                  People `gorm:"foreignKey:PeopleID;references:CommunityManagerPeopleID" json:"manager_info"`
+type Community struct {			
+	CommunityID    int    			`gorm:"column:communityid" json:"community_id"`
+	CommunityName  string 			`gorm:"column:communityname" json:"community_name"`
+	CommunityDesc  string 			`gorm:"column:communitydesc" json:"community_description"`
+	CommunityMgrID string 			`gorm:"column:communitymgrid" json:"community_manager"`
+	Icon           string 			`gorm:"column:communityicon" json:"icon"`
+	IsActive		 	 bool					`gorm:"column:isactive" json:"is_active"`
+	Manager        AdminManager `gorm:"foreignKey:ID;references:CommunityMgrID" json:"manager"`
 }
 
 func (Community) TableName() string {

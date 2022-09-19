@@ -40,26 +40,26 @@ INSERT INTO public.joblevel(jobleveldesc, isactive) VALUES('Undefined', TRUE);
 
 
 -- INSERT INTO project
-INSERT INTO public.project (projectdesc, isactive) VALUES('MagenicPDPBench', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('AlaskaAirlines-MobileExperience', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('CLA-AIS', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('CLA-QA', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('Broadridge-AdvisorWorkstation', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('CroweHorwath-Insight', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('GoP_MerchantsFleet-StrategicTeamSupport', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('MerchantsFleetStrategicEnhancementsTeam', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('CSV_BoiseCascade', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('DellOnline-AuthNExperienceTeam', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('DeltaDental-eBillPayApplnModernization', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('Discover-PVSAuthUser', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('EYMobilityTax-PeritoMoreno', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('EYMobilityTax-TeamGreatPyramid', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('Fiserv-DigitalChannelsMobile', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('FleetResponse-ApplicationSupport', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('HiSeis-Epicentre', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('LMCORPFinPOD', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('MerchantsFleet-OrderManagement', True);
-INSERT INTO public.project (projectdesc, isactive) VALUES('TraneTechnologies', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('MagenicPDPBench', 'MDP-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('AlaskaAirlines-MobileExperience', 'AAME-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('CLA-AIS', 'CLA-AIS-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('CLA-QA', 'CLA-QA-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('Broadridge-AdvisorWorkstation', 'BAW-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('CroweHorwath-Insight', 'CHI-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('GoP_MerchantsFleet-StrategicTeamSupport', 'GMFSTS-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('MerchantsFleetStrategicEnhancementsTeam', 'MFSET-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('CSV_BoiseCascade', 'CSVBS-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('DellOnline-AuthNExperienceTeam', 'DOAET-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('DeltaDental-eBillPayApplnModernization', 'DDEBPAM-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('Discover-PVSAuthUser', 'DPVSAU-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('EYMobilityTax-PeritoMoreno', 'EYMTPM-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('EYMobilityTax-TeamGreatPyramid', 'EYMTTGP-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('Fiserv-DigitalChannelsMobile', 'FDCM-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('FleetResponse-ApplicationSupport', 'FRAS-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('HiSeis-Epicentre', 'HSE-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('LMCORPFinPOD', 'LIP-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('MerchantsFleet-OrderManagement', 'MFO-101', True);
+INSERT INTO public.project (projectdesc, projectcode, isactive) VALUES('TraneTechnologies', 'TRT-101', True);
 
 
 -- INSERT INTO workstate 

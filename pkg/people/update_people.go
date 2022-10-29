@@ -23,7 +23,7 @@ type UpdatePeopleRequestBody struct {
 	Communityid    int    `validate:"required" gorm:"column:communityid" json:"community_id"`
 	Workstateid    int    `validate:"required" gorm:"column:workstateid" json:"workstate_id"`
 	Joblevelid     int    `validate:"required" gorm:"column:joblevelid" json:"joblevel_id"`
-	Projectid      int    `validate:"required" gorm:"column:projectid" json:"project_id"`
+	Projectid      *int    `gorm:"column:projectid" json:"project_id"`
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
 	Skills         string `json:"skills"`
@@ -43,7 +43,7 @@ func (h handler) UpdatePeople(c *fiber.Ctx) error {
 		Communityid:    0,
 		Workstateid:    0,
 		Joblevelid:     0,
-		Projectid:      0,
+		Projectid:      nil,
 		Isactive:       true,
 		Isprobationary: false,
 		Skills:         "",

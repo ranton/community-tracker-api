@@ -34,7 +34,7 @@ type Add_People struct {
 	Communityid    int    `gorm:"column:communityid" json:"community_id"`
 	Workstateid    int    `gorm:"column:workstateid" json:"workstate_id"`
 	Joblevelid     int    `gorm:"column:joblevelid" json:"joblevel_id"`
-	Projectid      int    `gorm:"column:projectid" json:"project_id"`
+	Projectid      *int    `gorm:"column:projectid" json:"project_id"`
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
 }
@@ -54,7 +54,7 @@ type Update_People struct {
 	Communityid    int    `gorm:"column:communityid" json:"community_id"`
 	Workstateid    int    `gorm:"column:workstateid" json:"workstate_id"`
 	Joblevelid     int    `gorm:"column:joblevelid" json:"joblevel_id"`
-	Projectid      int    `gorm:"column:projectid" json:"project_id"`
+	Projectid      *int    `gorm:"column:projectid" json:"project_id"`
 	Isactive       bool   `gorm:"column:isactive" json:"is_active"`
 	Isprobationary bool   `gorm:"column:isprobationary" json:"is_probationary"`
 }
